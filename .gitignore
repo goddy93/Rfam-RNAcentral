@@ -1,5 +1,6 @@
 #VIRTUAL ENVIRONMENT
 /venv-parser/*
+/venv-fasta_slicer/*
 
 #MY_FILES
 /parser_cmscan/files/*
