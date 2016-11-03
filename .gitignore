@@ -1,2 +1,3 @@
 #IGNORE VIRTUAL ENVIRONMENT
 /venv-parser/*
+/parser_cmscan/files/*
