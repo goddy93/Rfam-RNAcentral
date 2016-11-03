@@ -43,7 +43,15 @@ Choses best scored hits:
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Parser selects lines from table output where :code:`olp` column from the table output is :code:`*` or :code:`ˆ`
 
-	In the "olp" column, hits with the “*” do not overlap with any other hits, hits with “ˆ” do overlap with at least one other hit, but none of those overlapping hits have a better score and hits with “=” also overlap with at least one other hit that does have a better score. (see `Infernal User's Guide <http://eddylab.org/infernal/Userguide.pdf>`_)
+	In the "olp" column:
+	
+	- Hits with the “*” do not overlap with any other hits.
+	
+	- Hits with “ˆ” do overlap with at least one other hit, but none of those overlapping hits have a better score.
+	
+	- Hits with “=” also overlap with at least one other hit that does have a better score. 
+	
+	(see `INFERNAL User's Guide <http://eddylab.org/infernal/Userguide.pdf>`_)
 
 Selected columns and renaming:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -63,4 +71,4 @@ Selected columns and renaming:
 
 Tweaking these options:
 ^^^^^^^^^^^^^^^^^^^^^^^
-Parser should work with alternative options by modifying lines 15-17 from :code:`parser_cmscan.py`
+Parser should work with alternative options by modifying :code:`lines 15-17` from :code:`parser_cmscan.py`
