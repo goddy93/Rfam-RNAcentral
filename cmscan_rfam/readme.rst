@@ -1,6 +1,13 @@
 Description
 ===========
-Script and options for submitting **Infernal's cmscan** job to LSF cluster.
+Script and options for submitting **INFERNAL 1.1.2 cmscan** job to cluster with specific options.
+
+``cmscan`` options
+===================
+
+.. code:: bash
+
+	cmscan --tblout [tblout_path] --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin [clanin_path] [cm_path] [input_path]
 
 Cluster login
 =============
@@ -83,3 +90,4 @@ Submission would be:
 .. code:: bash
 
 	bsub -q mpi-rh7 -J jobname -o /nfs/gns/homes/nataquinones/RNAcentral_cmscan/prueba/test.txt -M 10000 -R "rusage[mem=10000]" -n 4 -R span[hosts=1] -a openmpi mpiexec -mca btl ^openib -np 4 /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/src/cmscan --tblout /nfs/gns/homes/nataquinones/RNAcentral_cmscan/prueba/tblout_test.txt --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/testsuite/Rfam.12.1.clanin /nfs/gns/homes/nataquinones/RfamCM/Rfam.cm /nfs/gns/homes/nataquinones/slice_RNAcentral/small_slices/rnacentral_active_1.1.fasta
+
