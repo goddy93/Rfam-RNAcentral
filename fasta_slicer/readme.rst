@@ -1,6 +1,7 @@
 Description
 ===========
 Slices FASTA file given the number of elements to be saverd per file.
+
 (Small modifications from code: `http://biopython.org/wiki/Split_large_file <http://biopython.org/wiki/Split_large_file>`_ )
 
 Use
@@ -23,10 +24,14 @@ Use
 Example
 ========
 
+Input
 .. code:: bash
 
-  >python fasta_slicer.py 2 ./sample_files/example.fasta
-  
+  python fasta_slicer.py 2 ./sample_files/example.fasta
+
+Output
+.. code:: bash
+
   Wrote 2 records to sample_files/example.fastagroup_1.fasta
   Wrote 2 records to sample_files/example.fastagroup_2.fasta
   Wrote 1 records to sample_files/example.fastagroup_3.fasta
