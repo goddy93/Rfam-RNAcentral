@@ -1,8 +1,8 @@
 import sys
 from Bio import SeqIO
 
+output_length = int(sys.argv[1])
 input_file = sys.argv[2]
-output_length = sys.argv[1]
 
 #FROM http://biopython.org/wiki/Split_large_file
 def batch_iterator(iterator, batch_size):

@@ -8,21 +8,26 @@ Use
 .. code:: bash
 
 	#create a new virtual environment
-	virtualenv /project_path/venv-slicer
+	virtualenv /project_path/venv-fasta_slicer
 
 	#activate virtual environment
-	source /project_path/venv-slicer/bin/activate
+	source /project_path/venv-fasta_slicer/bin/activate
 
 	#install Python dependencies
 	cd /project_path/fasta_slicer
 	pip install -r requirements.txt
 
 	#run python script
-	python slicer.py [num_records] [input_fasta]
+	python fasta_slicer.py [num_records] [input_fasta]
 
 Example
 ========
 
 .. code:: bash
 
-  python slicer.py 10 ./sample_files/example.txt	
+  >python fasta_slicer.py 2 ./sample_files/example.fasta
+  
+  Wrote 2 records to sample_files/example.fastagroup_1.fasta
+  Wrote 2 records to sample_files/example.fastagroup_2.fasta
+  Wrote 1 records to sample_files/example.fastagroup_3.fasta
+  
