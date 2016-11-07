@@ -118,7 +118,7 @@ Group queries
 *RNAcentral sequence is not Rfam, but had hits.*
 
 
-.. code :: SQL
+.. code:: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
@@ -132,7 +132,7 @@ Group queries
 
 *RNAcentral sequence is not Rfam, and had hits.*
 
-.. code :: SQL
+.. code:: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
@@ -143,7 +143,15 @@ Group queries
 
 Overcounting issue
 ------------------
-Redundancy in SAME HIT and CONFLICT HIT caused by multiple hits in a same RNAcentral sequence:
+TOTAL:
+
++--------------------------+-----------+
+| id_mapping               | 9 386 122 |
++--------------------------+-----------+
+| rnacentral_nhmmer.fasta  | 9 386 112 |
++--------------------------+-----------+
+
+All groups should be mutually exclusive, but with the previous queries there'll be redundancy in `SAME HIT` and `CONFLICTING HIT` caused by multiple hits in a same RNAcentral sequence:
 
 +----+----------+----------+-----------------+
 | id | rfam_acc | hit_rfam | GROUP           |
@@ -163,9 +171,13 @@ Redundancy in SAME HIT and CONFLICT HIT caused by multiple hits in a same RNAcen
 | 4  | A        | C        | CONFLICTING HIT |
 +----+----------+----------+-----------------+
 
-To collapse multiple hits:
+.. code::
 
-.. code :: SQL
+	G1 + G2 = TOTAL - (G3 + G4 + G5)
+
+To discern bewteen G1 and G2, multiple hits can be collapsed:
+
+.. code:: SQL
 
 	SELECT
 		ch.id, GROUP_CONCAT(DISTINCT ch.hit_rfam_acc) AS families
