@@ -1,7 +1,5 @@
 Rfam-RNAcentral Database
 ========================
-Database design
----------------
 
 Table creation
 --------------
