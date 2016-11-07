@@ -33,12 +33,6 @@ Output looks like this:
 	Largest:             244296
 	Average length:      642.7
 
-To obtain Mb 
-<<<<<<< HEAD
-..code:: bash
-	Number of residues * 2 / 1000000 
-=======
-
 .. code:: bash
 
 	Number of residues * 2 / 1000000 
@@ -126,5 +120,5 @@ Submission would be:
 
 .. code:: bash
 
-	bsub -q mpi-rh7 -J cmscan_1 -o /nfs/gns/homes/nataquinones/cmscan/job_out/cmscan_1.txt -M 10000 -R "rusage[mem=10000]" -n 4 -R span[hosts=1] -a openmpi mpiexec -mca btl ^openib -np 4 /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/src/cmscan --tblout /nfs/gns/homes/nataquinones/cmscan/tables/cmscan_tbl_1.txt -Z 12064 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/testsuite/Rfam.12.1.clanin /nfs/gns/homes/nataquinones/RfamCM/Rfam.cm /nfs/gns/homes/nataquinones/fasta_slicer/files/rnacentral.fastagroup_1.fasta
+	bsub -q mpi-rh7 -J cmscan_1 -o /nfs/gns/homes/nataquinones/cmscan/job_out/cmscan_1.txt -M 10000 -R "rusage[mem=10000]" -n 4 -R span[hosts=1] -a openmpi mpiexec -mca btl ^openib -np 4 /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/src/cmscan --tblout /nfs/gns/homes/nataquinones/cmscan/tables/cmscan_tbl_1.txt -Z 12063.99847 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/testsuite/Rfam.12.1.clanin /nfs/gns/homes/nataquinones/RfamCM/Rfam.cm /nfs/gns/homes/nataquinones/fasta_slicer/files/rnacentral.fastagroup_1.fasta
 
