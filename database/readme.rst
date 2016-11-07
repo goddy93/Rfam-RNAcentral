@@ -98,12 +98,6 @@ Group queries
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 	AND rm.rfam_acc != ch.hit_rfam_acc -- different
 
-#MULTIPLE HITS FILTER
-SELECT
-	ch.id, GROUP_CONCAT(DISTINCT ch.hit_rfam_acc) AS families
-FROM cmscan_hits ch 
-GROUP BY ch.id
-
 3. LOST IN SCAN
 ^^^^^^^^^^^^^^^
 
@@ -147,4 +141,33 @@ GROUP BY ch.id
 	WHERE rm.rfam_acc IS NULL -- not in Rfam
 	AND ch.hit_rfam_acc IS NOT NULL -- no hit
 
+Overcounting issue
+------------------
+Redundancy in SAME HIT and CONFLICT HIT caused by multiple hits in a same RNAcentral sequence:
 
++----+----------+----------+-----------------+
+| id | rfam_acc | hit_rfam | GROUP           |
++====+==========+==========+=================+
+| 1  | A        | A        | SAME HIT        |
++----+----------+----------+-----------------+
+| 2  | A        | B        | CONFLICTING HIT |
++----+----------+----------+-----------------+
+| 3  | A        | A        | SAME HIT        |
++----+----------+----------+-----------------+
+| 3  | A        | B        | CONFLICTING HIT |
++----+----------+----------+-----------------+
+| 4  | A        | A        | SAME HIT        |
++----+----------+----------+-----------------+
+| 4  | A        | B        | CONFLICTING HIT |
++----+----------+----------+-----------------+
+| 4  | A        | C        | CONFLICTING HIT |
++----+----------+----------+-----------------+
+
+To collapse multiple hits:
+
+.. code :: SQL
+
+	SELECT
+		ch.id, GROUP_CONCAT(DISTINCT ch.hit_rfam_acc) AS families
+	FROM cmscan_hits ch 
+	GROUP BY ch.id
