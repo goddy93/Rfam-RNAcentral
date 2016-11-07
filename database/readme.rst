@@ -139,7 +139,7 @@ Group queries
 	FROM rnacentral_map rm
 	LEFT JOIN cmscan_hits ch ON rm.id=ch.id
 	WHERE rm.rfam_acc IS NULL -- not in Rfam
-	AND ch.hit_rfam_acc IS NOT NULL -- no hit
+	AND ch.hit_rfam_acc IS NULL -- no hit
 
 Overcounting issue
 ------------------
