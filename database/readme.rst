@@ -8,7 +8,7 @@ Table creation
 
 Table ``rnacentral_map``
 ^^^^^^^^^^^^^^^^^^^^^^^
-.. code :: MySQL
+.. code :: SQL
 
 	CREATE TABLE rnacentral_map
 	SELECT 
@@ -19,16 +19,16 @@ Table ``rnacentral_map``
 	FROM id_mapping im
 	GROUP BY im.id
 
-Make id primary key:
+Make ``id`` primary key:
 
-.. code :: MySQL
+.. code :: SQL
 
 	ALTER TABLE rnacentral_map
 	ADD PRIMARY KEY (id);
 
 Table ``cmscan_hits``
 ^^^^^^^^^^^^^^^^^^^^^^^
-.. code :: MySQL
+.. code :: SQL
 
 	CREATE TABLE cmscan_hits
 	(id VARCHAR(13),
@@ -41,7 +41,7 @@ Table ``cmscan_hits``
 
 Make forgein key:
 
-.. code :: MySQL
+.. code :: SQL
 
 	ALTER TABLE cmscan_hits
 	ADD FOREIGN KEY (id)
@@ -49,17 +49,29 @@ Make forgein key:
 
 Load files into table:
 
-.. code :: MySQL
+.. code :: SQL
 
 	LOAD DATA LOCAL INFILE "file_to_be_loaded.txt" INTO TABLE cmscan_hits IGNORE 1 LINES;
 
-Loaded file should be in the output format of `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ to 
+Loaded file should be in the output format of `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ 
 
 Group queries
 --------------
-1. **SAME HIT**
-In Rfam, same hit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++----------------------------------------------------------+----------------------------------+
+| Rfam                                                     | No Rfam                          |
++---------------------------------------+------------------+-----------------+----------------+
+| Hits                                  | No hits          | Hits            | No hits        |
++-----------------+---------------------+                  |                 |                |
+| Same            | Not-same            |                  |                 |                |
++-----------------+---------------------+------------------+-----------------+----------------+
+| **SAME HIT**    | **CONFLICTING HIT** | **LOST IN SCAN** | **NEW MEMBERS** | **NEW FAMILY** |
++-----------------+---------------------+------------------+-----------------+----------------+
+
+1. SAME HIT
+^^^^^^^^^^^
+
+*RNAcentral sequence is in Rfam, has a hit that is the same as the Rfam annotation.*
 
 .. code :: SQL
 
@@ -71,8 +83,10 @@ In Rfam, same hit
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 	AND rm.rfam_acc = ch.hit_rfam_acc -- same
 
-GROUP *CONFLICTING HIT*: In Rfam, different hit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2. CONFLICTING HIT
+^^^^^^^^^^^^^^^^^^
+
+*RNAcentral sequence is in Rfam, has a hit that is not the same as the Rfam annotation.*
 
 .. code :: SQL
 
@@ -90,8 +104,10 @@ SELECT
 FROM cmscan_hits ch 
 GROUP BY ch.id
 
-GROUP *LOST IN SCAN*: In Rfam, got no hits
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3. LOST IN SCAN
+^^^^^^^^^^^^^^^
+
+*RNAcentral sequence is in Rfam, but had no hits in cmscan.*
 
 .. code :: SQL
 
@@ -102,8 +118,11 @@ GROUP *LOST IN SCAN*: In Rfam, got no hits
 	WHERE rm.rfam_acc IS NOT NULL -- in Rfam
 	AND ch.hit_rfam_acc IS NULL -- no hit
 
-GROUP *NEW MEMBERS*: Not in Rfam, got hit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4. NEW MEMBERS
+^^^^^^^^^^^^^^^
+
+*RNAcentral sequence is not Rfam, but had hits.*
+
 
 .. code :: SQL
 
@@ -114,8 +133,10 @@ GROUP *NEW MEMBERS*: Not in Rfam, got hit
 	WHERE rm.rfam_acc IS NULL -- not in Rfam
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 
-GROUP *NEW FAMILY*: Not in Rfam, no hits
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5. NEW FAMILY
+^^^^^^^^^^^^^^^
+
+*RNAcentral sequence is not Rfam, and had hits.*
 
 .. code :: SQL
 
