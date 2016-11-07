@@ -57,7 +57,8 @@ Loaded file should be in the output format of `parser_cmscan <https://github.com
 
 Group queries
 --------------
-GROUP **SAME HIT**: In Rfam, same hit
+1. **SAME HIT**
+In Rfam, same hit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code :: SQL
@@ -73,7 +74,7 @@ GROUP **SAME HIT**: In Rfam, same hit
 GROUP *CONFLICTING HIT*: In Rfam, different hit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code :: MySQL
+.. code :: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
@@ -92,7 +93,7 @@ GROUP BY ch.id
 GROUP *LOST IN SCAN*: In Rfam, got no hits
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code :: MySQL
+.. code :: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc
@@ -104,7 +105,7 @@ GROUP *LOST IN SCAN*: In Rfam, got no hits
 GROUP *NEW MEMBERS*: Not in Rfam, got hit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code :: MySQL
+.. code :: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
@@ -116,7 +117,7 @@ GROUP *NEW MEMBERS*: Not in Rfam, got hit
 GROUP *NEW FAMILY*: Not in Rfam, no hits
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code :: MySQL
+.. code :: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
