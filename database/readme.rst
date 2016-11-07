@@ -57,10 +57,10 @@ Loaded file should be in the output format of `parser_cmscan <https://github.com
 
 Group queries
 --------------
-GROUP *SAME HIT*: In Rfam, same hit
+GROUP **SAME HIT**: In Rfam, same hit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code :: MySQL
+.. code :: SQL
 
 	SELECT
 		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
