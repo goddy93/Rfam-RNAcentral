@@ -17,4 +17,4 @@ clanin_path="/nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/test
 cm_path="/nfs/gns/homes/nataquinones/RfamCM/Rfam.cm"
 
 #JOB
-$cmscan --tblout $tblout_path --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin $clanin_path $cm_path $input_path
+$cmscan --tblout $tblout_path -Z 12063.99847 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin $clanin_path $cm_path $input_path
