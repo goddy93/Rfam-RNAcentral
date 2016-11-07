@@ -35,7 +35,7 @@ Output looks like this:
 
 .. code:: bash
 
-	Number of residues * 2 / 1000000 
+	Z = Number of residues * 2 / 1000000 
 
 Which in this case = ``12063.99847``
 
