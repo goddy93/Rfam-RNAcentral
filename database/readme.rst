@@ -8,6 +8,8 @@ Table creation
 
 Table ``rnacentral_map``
 ^^^^^^^^^^^^^^^^^^^^^^^
+Where ``id_mapping`` is a table generated previously from the ``id_mapping`` file in the RNAcentral FTP site:
+
 .. code :: SQL
 
 	CREATE TABLE rnacentral_map
