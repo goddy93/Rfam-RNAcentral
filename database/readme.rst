@@ -34,7 +34,7 @@ Table ``cmscan_hits``
 
 	CREATE TABLE cmscan_hits
 	(id VARCHAR(13),
-	hit_rfam VARCHAR(7),
+	hit_rfam_acc VARCHAR(7),
 	fam_name VARCHAR(30),
 	hit_clan_acc VARCHAR(7),
 	olp VARCHAR(1),
