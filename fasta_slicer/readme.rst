@@ -38,3 +38,6 @@ Output
   Wrote 2 records to sample_files/example.fastagroup_2.fasta
   Wrote 1 records to sample_files/example.fastagroup_3.fasta
   
+Extras
+===========
+```fasta_len.py`` is a small script which reads a ``FASTA`` file and outputs two columns with the *accession number* and its corresponding *length* 
