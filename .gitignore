@@ -2,9 +2,10 @@
 /venv-parser/*
 /venv-fasta_slicer/*
 
+#TEST_Files
+/cmscan_rfam/tests/*
+
 #MY_FILES
 /parser_cmscan/files/*
 /database/files/*
-
-#TEST_Files
-/cmscan_rfam/tests/*
+/fasta_slicer/files/*
