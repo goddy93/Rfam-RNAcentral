@@ -103,6 +103,7 @@ Uses ``id_mapping`` table and collapses certain fields to make queries easier
 		GROUP_CONCAT(DISTINCT im.db) AS db,
 		GROUP_CONCAT(DISTINCT IF(im.db LIKE '%RFAM%',im.db_acc,NULL)) AS rfam_acc,
 		GROUP_CONCAT(DISTINCT im.rna_type) AS rna_type
+		#GROUP_CONCAT(DISTINCT im.tax_id) AS tax_id
 	FROM id_mapping im
 	GROUP BY im.id
 
