@@ -4,6 +4,7 @@
 
 #MY_FILES
 /parser_cmscan/files/*
+/database/files/*
 
 #TEST_Files
 /cmscan_rfam/tests/*
