@@ -1,33 +1,71 @@
 Rfam-RNAcentral Database
 ========================
-
-Table creation
---------------
-
-Table ``rnacentral_map``
-^^^^^^^^^^^^^^^^^^^^^^^
-Where ``id_mapping`` is a table generated previously from the ``id_mapping`` file in the RNAcentral FTP site:
+Tables
+------
+Table ``id_mapping``
+^^^^^^^^^^^^^^^^^^^^
+Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <http://rnacentral.org/downloads>`_
 
 .. code :: SQL
 
-	CREATE TABLE rnacentral_map
-	SELECT 
-		im.id, 
-		GROUP_CONCAT(DISTINCT im.db) AS db,
-		GROUP_CONCAT(DISTINCT IF(im.db LIKE '%RFAM%',im.db_acc,NULL)) AS rfam_acc,
-		GROUP_CONCAT(DISTINCT im.rna_type) AS rna_type
-	FROM id_mapping im
-	GROUP BY im.id
+	CREATE TABLE id_mapping (
+		id INT(10),
+		db VARCHAR(100),
+		db_acc VARCHAR(100),
+		tax_id VARCHAR(30),
+		rna_type VARCHAR(10)
+		);
 
-Make ``id`` primary key:
+	ALTER TABLE id_mapping
+	ADD PRIMARY KEY (id)
+	
+	LOAD DATA LOCAL INFILE "path/to/id_mapping.txt" INTO TABLE id_mapping;
+
+Table ``taxonomy``
+^^^^^^^^^^^^^^^^^^
+Table generated from a selection of the ``taxonomy`` table in `Rfam public database <http://rfam.github.io/docs/>`_.
+
+Saved query as ``taxonomy.txt``:
 
 .. code :: SQL
 
-	ALTER TABLE rnacentral_map
-	ADD PRIMARY KEY (id);
+	SELECT t.ncbi_id, t.species, t.tax_string
+	FROM taxonomy t
+		
+Table generated:
+
+.. code :: SQL
+
+	CREATE TABLE taxonomy (
+		ncbi_id INT(10),
+		species VARCHAR(100),
+		tax_string VARCHAR(100)
+		);
+
+	ALTER TABLE taxonomy
+	ADD PRIMARY KEY (ncbi_id)
+
+
+	LOAD DATA LOCAL INFILE "path/to/taxonomy.txt" INTO TABLE taxonomy IGNORE 1 LINES;
+
+Table ``length``
+^^^^^^^^^^^^^^^^
+Table generated from output of ``fasta_len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_len.py>`_. when running it for file ``rnacentral_active.fasta`` from the RNAcentral FTP page
+
+.. code :: SQL
+
+	CREATE TABLE length
+	(id VARCHAR(13),
+	hit_rfam_acc INT(6)
+	);
+	
+	LOAD DATA LOCAL INFILE "path/to/taxonomy.txt" INTO TABLE taxonomy FIELDS TERMINATED BY ' ';
+
 
 Table ``cmscan_hits``
 ^^^^^^^^^^^^^^^^^^^^^^^
+Table to input files from cmscan process (`here <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_rfam>`_) and after being parsed by  `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ 
+
 .. code :: SQL
 
 	CREATE TABLE cmscan_hits
@@ -53,7 +91,27 @@ Load files into table:
 
 	LOAD DATA LOCAL INFILE "file_to_be_loaded.txt" INTO TABLE cmscan_hits IGNORE 1 LINES;
 
-Loaded file should be in the output format of `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ 
+Table ``rnacentral_map``
+^^^^^^^^^^^^^^^^^^^^^^^
+Uses ``id_mapping`` table and collapses certain fields to make queries easier
+
+.. code :: SQL
+
+	CREATE TABLE rnacentral_map
+	SELECT 
+		im.id, 
+		GROUP_CONCAT(DISTINCT im.db) AS db,
+		GROUP_CONCAT(DISTINCT IF(im.db LIKE '%RFAM%',im.db_acc,NULL)) AS rfam_acc,
+		GROUP_CONCAT(DISTINCT im.rna_type) AS rna_type
+	FROM id_mapping im
+	GROUP BY im.id
+
+Make ``id`` primary key:
+
+.. code :: SQL
+
+	ALTER TABLE rnacentral_map
+	ADD PRIMARY KEY (id);
 
 Group queries
 --------------
