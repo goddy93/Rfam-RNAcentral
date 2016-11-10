@@ -50,7 +50,7 @@ Table generated:
 
 Table ``length``
 ^^^^^^^^^^^^^^^^
-Table generated from output of ``fasta_len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_len.py>`_. when running it for file ``rnacentral_active.fasta`` from the RNAcentral FTP page
+Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_active.fasta`` from the RNAcentral FTP page
 
 .. code :: SQL
 
@@ -59,7 +59,7 @@ Table generated from output of ``fasta_len.py`` script `(here) <https://github.c
 	hit_rfam_acc INT(6)
 	);
 	
-	LOAD DATA LOCAL INFILE "path/to/taxonomy.txt" INTO TABLE taxonomy FIELDS TERMINATED BY ' ';
+	LOAD DATA LOCAL INFILE "path/to/file_seq-len.txt" INTO TABLE length IGNORE 1 LINES;
 
 
 Table ``cmscan_hits``
