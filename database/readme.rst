@@ -150,6 +150,7 @@ Make ``id`` primary key:
 	ADD PRIMARY KEY (id);
 
 The concatenated ``tax_id`` field can get very large, this was needed before creating the table:
+
 .. code :: SQL
 
 	SET group_concat_max_len=100000
