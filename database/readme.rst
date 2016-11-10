@@ -9,7 +9,7 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 .. code:: SQL
 
 	CREATE TABLE id_mapping (
-		id INT(10),
+		id VARCHAR(13),
 		db VARCHAR(100),
 		db_acc VARCHAR(100),
 		tax_id VARCHAR(30),
