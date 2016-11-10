@@ -102,8 +102,7 @@ Uses ``id_mapping`` table and collapses certain fields to make queries easier.
 	GROUP BY im.id;
 
 	ALTER TABLE urs_condensed
-	ADD FOREIGN KEY (id)
-	REFERENCES cmscan_run (id);
+	ADD PRIMARY KEY (id);
 
 The concatenated ``tax_id`` field can get very large, this was needed before creating the table:
 
