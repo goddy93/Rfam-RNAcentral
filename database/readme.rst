@@ -68,8 +68,7 @@ Table to keep track of URSs that have already been scanned. It is generated from
 .. code :: SQL
 
 	CREATE TABLE length
-	(id VARCHAR(13),
-	hit_rfam_acc INT(6)
+	(id VARCHAR(13)
 	);
 	
 	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE length IGNORE 1 LINES;
