@@ -16,8 +16,9 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 		rna_type VARCHAR(10)
 		);
 
-	ALTER TABLE id_mapping
-	ADD PRIMARY KEY (id)
+	**ALTER TABLE id_mapping
+	ADD FOREIGN KEY (tax_id)
+	REFERENCES taxonomy (ncbi_id);
 	
 	LOAD DATA LOCAL INFILE "path/to/id_mapping.txt" INTO TABLE id_mapping;
 
@@ -37,12 +38,12 @@ Table generated:
 .. code :: SQL
 
 	CREATE TABLE taxonomy (
-		ncbi_id INT(10),
+		ncbi_id VARCHAR(10),
 		species VARCHAR(100),
 		tax_string VARCHAR(100)
 		);
 
-	ALTER TABLE taxonomy
+	**ALTER TABLE taxonomy
 	ADD PRIMARY KEY (ncbi_id)
 
 
@@ -58,6 +59,10 @@ Table generated from output of ``fasta_seq-len.py`` script `(here) <https://gith
 	(id VARCHAR(13),
 	hit_rfam_acc INT(6)
 	);
+
+	**ALTER TABLE length
+	ADD FOREIGN KEY (id)
+	REFERENCES cmscan_run (id);
 	
 	LOAD DATA LOCAL INFILE "path/to/file_seq-len.txt" INTO TABLE length IGNORE 1 LINES;
 
@@ -67,11 +72,14 @@ Table to keep track of URSs that have already been scanned. It is generated from
 
 .. code :: SQL
 
-	CREATE TABLE length
+	CREATE TABLE cmscan_run
 	(id VARCHAR(13),
-	hit_rfam_acc INT(6)
+	hit_rfam_acc VARCHAR(20)
 	);
 	
+	**ALTER TABLE cmscan_run
+	ADD PRIMARY KEY (id)
+
 	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE length IGNORE 1 LINES;
 
 Table ``cmscan_hits``
@@ -93,38 +101,15 @@ Make forgein key:
 
 .. code :: SQL
 
-	ALTER TABLE cmscan_hits
+	**ALTER TABLE cmscan_hits
 	ADD FOREIGN KEY (id)
-	REFERENCES rnacentral_map (id);
+	REFERENCES cmscan_run (id);
 
 Load files into table:
 
 .. code :: SQL
 
 	LOAD DATA LOCAL INFILE "parsed_file.txt" INTO TABLE cmscan_hits IGNORE 1 LINES;
-
-Table ``rnacentral_map``
-^^^^^^^^^^^^^^^^^^^^^^^
-Uses ``id_mapping`` table and collapses certain fields to make queries easier
-
-.. code :: SQL
-
-	CREATE TABLE rnacentral_map
-	SELECT 
-		im.id, 
-		GROUP_CONCAT(DISTINCT im.db) AS db,
-		GROUP_CONCAT(DISTINCT IF(im.db LIKE '%RFAM%',im.db_acc,NULL)) AS rfam_acc,
-		GROUP_CONCAT(DISTINCT im.rna_type) AS rna_type
-		#GROUP_CONCAT(DISTINCT im.tax_id) AS tax_id
-	FROM id_mapping im
-	GROUP BY im.id
-
-Make ``id`` primary key:
-
-.. code :: SQL
-
-	ALTER TABLE rnacentral_map
-	ADD PRIMARY KEY (id);
 
 Table ``urs_condensed``
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -182,6 +167,28 @@ Group queries
 	WHERE rm.rfam_acc IS NOT NULL -- in Rfam
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 	AND rm.rfam_acc = ch.hit_rfam_acc -- same
+
+	-- NEW
+	SELECT
+	        cr.id,
+	        uc.db,
+	        uc.rna_type,
+	        uc.rfam_acc,
+	        uc.tax_id,
+	        l.len,
+	        ch.hit_rfam_acc,
+	        ch.hit_clan_acc,
+	        ch.e_value
+	FROM cmscan_run cr
+	LEFT JOIN urs_condensed uc ON cr.id = uc.id
+	LEFT JOIN length l ON cr.id = l.id
+	LEFT JOIN cmscan_hits_z ch ON cr.id = ch.id
+
+	WHERE uc.rfam_acc IS NOT NULL -- in Rfam
+	AND ch.hit_rfam_acc IS NOT NULL -- got hit
+	AND uc.rfam_acc = ch.hit_rfam_acc -- same
+
+
 
 2. CONFLICTING HIT
 ^^^^^^^^^^^^^^^^^^
