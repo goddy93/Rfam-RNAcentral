@@ -126,6 +126,34 @@ Make ``id`` primary key:
 	ALTER TABLE rnacentral_map
 	ADD PRIMARY KEY (id);
 
+Table ``urs_condensed``
+^^^^^^^^^^^^^^^^^^^^^^^
+Uses ``id_mapping`` table and collapses certain fields to make queries easier.
+
+.. code :: SQL
+
+	CREATE TABLE urs_condensed
+	SELECT
+		im.id,
+		GROUP_CONCAT(DISTINCT im.db) AS db,
+		GROUP_CONCAT(DISTINCT IF(im.db LIKE '%RFAM%',im.db_acc,NULL)) AS rfam_acc,
+		GROUP_CONCAT(DISTINCT im.rna_type) AS rna_type,
+		GROUP_CONCAT(DISTINCT im.tax_id) AS tax_id
+	FROM id_mapping im
+	GROUP BY im.id;
+
+Make ``id`` primary key:
+
+.. code :: SQL
+
+	ALTER TABLE urs_condensed
+	ADD PRIMARY KEY (id);
+
+The concatenated ``tax_id`` field can get very large, this was needed before creating the table:
+.. code :: SQL
+
+	SET group_concat_max_len=100000
+
 Group queries
 --------------
 
