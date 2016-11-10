@@ -63,7 +63,7 @@ Table to keep track of URSs that have already been scanned. It is generated from
 	);
 	
 	ALTER TABLE cmscan_run
-	ADD PRIMARY KEY (id)
+	ADD PRIMARY KEY (id);
 
 	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE length IGNORE 1 LINES;
 
