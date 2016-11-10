@@ -67,7 +67,7 @@ Table to keep track of URSs that have already been scanned. It is generated from
 
 .. code :: SQL
 
-	CREATE TABLE length
+	CREATE TABLE cmscan_run
 	(id VARCHAR(13)
 	);
 	
