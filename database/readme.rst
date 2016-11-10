@@ -73,6 +73,7 @@ Table to keep track of URSs that have already been scanned. It is generated from
 .. code :: SQL
 
 	CREATE TABLE cmscan_run
+<<<<<<< HEAD
 	(id VARCHAR(13),
 	hit_rfam_acc VARCHAR(20)
 	);
@@ -81,6 +82,15 @@ Table to keep track of URSs that have already been scanned. It is generated from
 	ADD PRIMARY KEY (id)
 
 	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE length IGNORE 1 LINES;
+=======
+	(id VARCHAR(13)
+	);
+	
+	ALTER TABLE cmscan_run
+	ADD PRIMARY KEY (id)
+	
+	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE cmscan_run IGNORE 1 LINES;
+>>>>>>> b1b1d4e29e0b13c7d2cda5b66b7416f525f0715a
 
 Table ``cmscan_hits``
 ^^^^^^^^^^^^^^^^^^^^^^^
