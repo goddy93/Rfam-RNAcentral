@@ -41,7 +41,7 @@ Table generated:
 .. code:: SQL
 
 	CREATE TABLE taxonomy (
-		ncbi_id VARCHAR(10),
+		ncbi_id INT(10),
 		species VARCHAR(100),
 		tax_string VARCHAR(100)
 		);
