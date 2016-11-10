@@ -19,10 +19,6 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 	ALTER TABLE id_mapping
 	ADD PRIMARY KEY (id);
 	
-	ALTER TABLE id_mapping
-	ADD FOREIGN KEY (tax_id)
-	REFERENCES cmscan_run (ncbi_id);
-	
 	LOAD DATA LOCAL INFILE "path/to/id_mapping.txt" INTO TABLE id_mapping;
 
 Table ``taxonomy``
