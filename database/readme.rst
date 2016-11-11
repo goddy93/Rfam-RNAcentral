@@ -9,7 +9,7 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 .. code:: SQL
 
 	CREATE TABLE id_mapping (
-		id INT(10),
+		id VARCHAR(13),
 		db VARCHAR(100),
 		db_acc VARCHAR(100),
 		tax_id VARCHAR(30),
@@ -18,10 +18,6 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 
 	ALTER TABLE id_mapping
 	ADD PRIMARY KEY (id);
-	
-	ALTER TABLE id_mapping
-	ADD FOREIGN KEY (tax_id)
-	REFERENCES cmscan_run (ncbi_id);
 	
 	LOAD DATA LOCAL INFILE "path/to/id_mapping.txt" INTO TABLE id_mapping;
 
@@ -41,7 +37,7 @@ Table generated:
 .. code:: SQL
 
 	CREATE TABLE taxonomy (
-		ncbi_id VARCHAR(10),
+		ncbi_id INT(10),
 		species VARCHAR(100),
 		tax_string VARCHAR(100)
 		);
@@ -63,9 +59,9 @@ Table to keep track of URSs that have already been scanned. It is generated from
 	);
 	
 	ALTER TABLE cmscan_run
-	ADD PRIMARY KEY (id)
+	ADD PRIMARY KEY (id);
 
-	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE length IGNORE 1 LINES;
+	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE cmscan_run IGNORE 1 LINES;
 
 
 Table ``cmscan_hits``
@@ -106,8 +102,7 @@ Uses ``id_mapping`` table and collapses certain fields to make queries easier.
 	GROUP BY im.id;
 
 	ALTER TABLE urs_condensed
-	ADD FOREIGN KEY (id)
-	REFERENCES cmscan_run (id);
+	ADD PRIMARY KEY (id);
 
 The concatenated ``tax_id`` field can get very large, this was needed before creating the table:
 
