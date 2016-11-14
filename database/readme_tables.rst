@@ -1,6 +1,5 @@
 Database Tables
 ========================
-
 Table ``urs_rnacentral``
 ------------------------
 Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_nhmmer.fasta`` from the RNAcentral FTP page
@@ -87,22 +86,21 @@ Table to keep track of URSs that have already been scanned. It is generated from
 
 	LOAD DATA LOCAL INFILE "path/to/file_seq-ids.txt" INTO TABLE cmscan_run IGNORE 1 LINES;
 
-
 Table ``cmscan_hits``
 ---------------------
 Table to input files from cmscan process (`here <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_rfam>`_) and after being parsed by  `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ 
 
 .. code:: SQL
 
-	CREATE TABLE cmscan_hits
-	(id VARCHAR(13),
-	hit_rfam_acc VARCHAR(7),
-	fam_name VARCHAR(30),
-	hit_clan_acc VARCHAR(7),
-	olp VARCHAR(1),
-	e_value VARCHAR(10),
-	FOREIGN KEY (id)
-		REFERENCES urs_rnacentral (id)
+	CREATE TABLE cmscan_hits (
+		id VARCHAR(13),
+		hit_rfam_acc VARCHAR(7),
+		fam_name VARCHAR(30),
+		hit_clan_acc VARCHAR(7),
+		olp VARCHAR(1),
+		e_value VARCHAR(10),
+		FOREIGN KEY (id)
+			REFERENCES urs_rnacentral (id)
 	);
 
 	LOAD DATA LOCAL INFILE "parsed_file.txt" INTO TABLE cmscan_hits IGNORE 1 LINES;
@@ -114,12 +112,10 @@ Table to input ids that have run in cmscan
 .. code:: SQL
 
 	CREATE TABLE cmscan_run (
-	id VARCHAR(13) NOT NULL,
-	file VARCHAR(20),
-	PRIMARY KEY(id)
+		id VARCHAR(13) NOT NULL,
+		file VARCHAR(20),
+		PRIMARY KEY(id)
 	);
-
-
 
 Table ``urs_condensed``
 -----------------------
@@ -145,5 +141,3 @@ The concatenated ``tax_id`` field can get very large, this was needed before cre
 .. code:: SQL
 
 	SET group_concat_max_len=100000
-
-
