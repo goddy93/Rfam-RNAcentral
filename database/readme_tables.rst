@@ -3,6 +3,7 @@ Database Tables
 Table ``urs_rnacentral``
 ------------------------
 Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_active.fasta`` from the RNAcentral FTP page
+
 .. code:: SQL
 
 	CREATE TABLE urs_rnacentral(
