@@ -18,30 +18,23 @@ Group queries
 .. code:: SQL
 
 	SELECT
-		rm.id, rm.db, rm.rna_type, rm.rfam_acc, ch.hit_rfam_acc, ch.hit_clan_acc
-	FROM rnacentral_map rm
-	LEFT JOIN cmscan_hits ch ON rm.id=ch.id
-	WHERE rm.rfam_acc IS NOT NULL -- in Rfam
-	AND ch.hit_rfam_acc IS NOT NULL -- got hit
-	AND rm.rfam_acc = ch.hit_rfam_acc -- same
+		ur.id,
+		ur.len,
+		uc.db,
+		uc.rna_type,
+		uc.rfam_acc,
+		uc.tax_id,
+		ch.hit_rfam_acc,
+		ch.hit_clan_acc,
+		ch.e_value
+	FROM urs_rnacentral ur
+	LEFT JOIN cmscan_run cr ON ur.id = cr.id
+	LEFT JOIN urs_condensed uc ON ur.id = uc.id
+	LEFT JOIN cmscan_hits ch ON ur.id = ch.id
 
-	-- NEW
-	SELECT
-	        cr.id,
-	        uc.db,
-	        uc.rna_type,
-	        uc.rfam_acc,
-	        uc.tax_id,
-	        l.len,
-	        ch.hit_rfam_acc,
-	        ch.hit_clan_acc,
-	        ch.e_value
-	FROM cmscan_run cr
-	LEFT JOIN urs_condensed uc ON cr.id = uc.id
-	LEFT JOIN length l ON cr.id = l.id
-	LEFT JOIN cmscan_hits_z ch ON cr.id = ch.id
+	WHERE cr.id IS NOT NULL -- ran
 
-	WHERE uc.rfam_acc IS NOT NULL -- in Rfam
+	AND uc.rfam_acc IS NOT NULL -- in Rfam
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 	AND uc.rfam_acc = ch.hit_rfam_acc -- same
 
@@ -55,22 +48,23 @@ Group queries
 .. code:: SQL
 
 	SELECT
-		cr.id,
+		ur.id,
+		ur.len,
 		uc.db,
 		uc.rna_type,
 		uc.rfam_acc,
 		uc.tax_id,
-		l.len,
 		ch.hit_rfam_acc,
 		ch.hit_clan_acc,
 		ch.e_value
-		
-	FROM cmscan_run cr
-	LEFT JOIN urs_condensed uc ON cr.id = uc.id
-	LEFT JOIN length l ON cr.id = l.id
-	LEFT JOIN cmscan_hits_z ch ON cr.id = ch.id
+	FROM urs_rnacentral ur
+	LEFT JOIN cmscan_run cr ON ur.id = cr.id
+	LEFT JOIN urs_condensed uc ON ur.id = uc.id
+	LEFT JOIN cmscan_hits ch ON ur.id = ch.id
 
-	WHERE uc.rfam_acc IS NOT NULL -- in Rfam
+	WHERE cr.id IS NOT NULL -- ran
+
+	AND uc.rfam_acc IS NOT NULL -- in Rfam
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 	AND uc.rfam_acc != ch.hit_rfam_acc -- different
 
@@ -82,22 +76,25 @@ Group queries
 .. code:: SQL
 
 	SELECT
-		cr.id,
+		ur.id,
+		ur.len,
 		uc.db,
 		uc.rna_type,
 		uc.rfam_acc,
 		uc.tax_id,
-		l.len,
 		ch.hit_rfam_acc,
 		ch.hit_clan_acc,
 		ch.e_value
-	FROM cmscan_run cr
-	LEFT JOIN urs_condensed uc ON cr.id = uc.id
-	LEFT JOIN length l ON cr.id = l.id
-	LEFT JOIN cmscan_hits_z ch ON cr.id = ch.id
+	FROM urs_rnacentral ur
+	LEFT JOIN cmscan_run cr ON ur.id = cr.id
+	LEFT JOIN urs_condensed uc ON ur.id = uc.id
+	LEFT JOIN cmscan_hits ch ON ur.id = ch.id
 
-	WHERE uc.rfam_acc IS NOT NULL -- in Rfam
+	WHERE cr.id IS NOT NULL -- ran
+
+	AND uc.rfam_acc IS NOT NULL -- in Rfam
 	AND ch.hit_rfam_acc IS NULL -- no hit
+
 
 4. NEW MEMBERS
 --------------
@@ -108,21 +105,23 @@ Group queries
 .. code:: SQL
 
 	SELECT
-		cr.id,
+		ur.id,
+		ur.len,
 		uc.db,
 		uc.rna_type,
 		uc.rfam_acc,
 		uc.tax_id,
-		l.len,
 		ch.hit_rfam_acc,
 		ch.hit_clan_acc,
 		ch.e_value
-	FROM cmscan_run cr
-	LEFT JOIN urs_condensed uc ON cr.id = uc.id
-	LEFT JOIN length l ON cr.id = l.id
-	LEFT JOIN cmscan_hits_z ch ON cr.id = ch.id
+	FROM urs_rnacentral ur
+	LEFT JOIN cmscan_run cr ON ur.id = cr.id
+	LEFT JOIN urs_condensed uc ON ur.id = uc.id
+	LEFT JOIN cmscan_hits ch ON ur.id = ch.id
 
-	WHERE uc.rfam_acc IS NULL -- not in Rfam
+	WHERE cr.id IS NOT NULL -- ran
+
+	AND uc.rfam_acc IS NULL -- not in Rfam
 	AND ch.hit_rfam_acc IS NOT NULL -- got hit
 
 5. NEW FAMILY
@@ -133,22 +132,55 @@ Group queries
 .. code:: SQL
 
 	SELECT
-		cr.id,
+		ur.id,
+		ur.len,
 		uc.db,
 		uc.rna_type,
 		uc.rfam_acc,
 		uc.tax_id,
-		l.len,
 		ch.hit_rfam_acc,
 		ch.hit_clan_acc,
 		ch.e_value
-	FROM cmscan_run cr
-	LEFT JOIN urs_condensed uc ON cr.id = uc.id
-	LEFT JOIN length l ON cr.id = l.id
-	LEFT JOIN cmscan_hits_z ch ON cr.id = ch.id
+	FROM urs_rnacentral ur
+	LEFT JOIN cmscan_run cr ON ur.id = cr.id
+	LEFT JOIN urs_condensed uc ON ur.id = uc.id
+	LEFT JOIN cmscan_hits ch ON ur.id = ch.id
 
-	WHERE uc.rfam_acc IS NULL -- not in Rfam
+	WHERE cr.id IS NOT NULL -- ran
+
+	AND uc.rfam_acc IS NULL -- not in Rfam
 	AND ch.hit_rfam_acc IS NULL -- no hit
+
+Filter:
+.. code:: SQL
+
+	SELECT
+		ur.id,
+		ur.len,
+		uc.db,
+		uc.rna_type,
+		uc.rfam_acc,
+		uc.tax_id,
+		ch.hit_rfam_acc,
+		ch.hit_clan_acc,
+		ch.e_value
+	FROM urs_rnacentral ur
+	LEFT JOIN cmscan_run cr ON ur.id = cr.id
+	LEFT JOIN urs_condensed uc ON ur.id = uc.id
+	LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+
+	WHERE cr.id IS NOT NULL -- ran
+
+	AND uc.rfam_acc IS NULL -- not in Rfam
+	AND ch.hit_rfam_acc IS NULL -- no hit
+
+	AND uc.rna_type NOT LIKE 'tRNA%'
+	AND uc.rna_type NOT LIKE 'rRNA%'
+	AND uc.rna_type NOT LIKE 'piRNA%'
+	AND ur.len > 30
+	AND ur.len < 200
+
+	ORDER BY uc.db
 
 Overcounting issue
 ------------------
