@@ -3,7 +3,7 @@ Database Tables
 
 Table ``urs_rnacentral``
 ------------------------
-Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_active.fasta`` from the RNAcentral FTP page
+Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_nhmmer.fasta`` from the RNAcentral FTP page
 
 .. code:: SQL
 
@@ -19,7 +19,7 @@ Table generated from output of ``fasta_seq-len.py`` script `(here) <https://gith
 		CHANGE COLUMN len len
 		INT(6);
 
-#ROWS: 9 386 112
+Resulting number of rows: 9386112
 
 Table ``taxonomy``
 -----------------
@@ -32,7 +32,7 @@ Saved query as ``taxonomy.txt``:
 	SELECT t.ncbi_id, t.species, t.tax_string
 	FROM taxonomy t
 		
-Table generated:
+Table:
 
 .. code:: SQL
 
@@ -45,7 +45,7 @@ Table generated:
 
 	LOAD DATA LOCAL INFILE "path/to/taxonomy.txt" INTO TABLE taxonomy IGNORE 1 LINES;
 
-#ROWS: 738 575
+Resulting number of rows: 738575
 
 Table ``id_mapping``
 --------------------
@@ -69,7 +69,7 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 	ALTER TABLE id_mapping
 	ADD FOREIGN KEY (tax_id) REFERENCES taxonomy (ncbi_id);
 
-#ROWS: 
+Resulting number of rows: 
 
 Table ``cmscan_run``
 --------------------
@@ -107,7 +107,7 @@ Table to input files from cmscan process (`here <https://github.com/nataquinones
 
 	LOAD DATA LOCAL INFILE "parsed_file.txt" INTO TABLE cmscan_hits IGNORE 1 LINES;
 
-Table ``cmscan_hits``
+Table ``cmscan_run``
 ---------------------
 Table to input ids that have run in cmscan
 
@@ -118,7 +118,7 @@ Table to input ids that have run in cmscan
 	file VARCHAR(20),
 	PRIMARY KEY(id)
 	);
-	
+
 
 
 Table ``urs_condensed``
