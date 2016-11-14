@@ -152,6 +152,7 @@ Group queries
 	AND ch.hit_rfam_acc IS NULL -- no hit
 
 Filter:
+
 .. code:: SQL
 
 	SELECT
