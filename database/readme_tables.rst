@@ -2,8 +2,7 @@ Database Tables
 ========================
 Table ``urs_rnacentral``
 ------------------------
-Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_nhmmer.fasta`` from the RNAcentral FTP page
-
+Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_slicer/fasta_seq-len.py>`_. when running it for file ``rnacentral_active.fasta`` from the RNAcentral FTP page
 .. code:: SQL
 
 	CREATE TABLE urs_rnacentral(
@@ -62,14 +61,14 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 
 	LOAD DATA LOCAL INFILE "path/to/id_mapping.txt" INTO TABLE id_mapping;
 
-	--Not working*
 	ALTER TABLE id_mapping
 	ADD FOREIGN KEY (id) REFERENCES urs_rnacentral (id);
 	
+	--Not working*
 	ALTER TABLE id_mapping
 	ADD FOREIGN KEY (tax_id) REFERENCES taxonomy (ncbi_id);
 
-Resulting number of rows: 
+Resulting number of rows: 27980630
 
 Table ``cmscan_hits``
 ---------------------
@@ -134,11 +133,11 @@ Consistency
 +--------------------------+----------+
 | File / Table             | Rows     |
 +==========================+==========+
-| seq_len.txt              | 9386113  |
+| seq_len.txt              | 9386123  |
 +--------------------------+----------+
 | rnacentral_nhmmaer.fasta | 9386112  |
 +--------------------------+----------+
-| urs_rnacentral           | 9386112  |
+| urs_rnacentral           | 9386122  |
 +--------------------------+----------+
 | rnacentral.active.fasta  | 9386122  |
 +--------------------------+----------+
