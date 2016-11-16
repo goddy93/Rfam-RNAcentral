@@ -5,10 +5,12 @@ import plotly
 from plotly.offline import plot
 import plotly.graph_objs as go
 from plotly.graph_objs import *
+from plotly.tools import FigureFactory as FF
 
 allpiechart = "./files/all_pie.html"
 rna_type_allbar = "./files/rna_type_allbar.html"
 rna_type_sigbar = "./files/rna_type_sigbar.html"
+newfamilyurs_table = "./files/newfamilyurs_table.html"
 
 #=====DATA INPUT=====
 engine = sqlalchemy.create_engine('mysql+mysqldb://root:rna@localhost/rnac_rfam')
@@ -424,3 +426,156 @@ layout = go.Layout(
 
 fig = go.Figure(data = data, layout = layout)
 plotly.offline.plot(fig, filename = rna_type_sigbar)
+
+#-----Table with interesting New family urs
+#.....Query (with filter) and dataframe.....
+query_newfamfilter = "SELECT ur.id, ur.len, uc.db, uc.rna_type, uc.rfam_acc, uc.tax_id, ch.hit_rfam_acc, ch.hit_clan_acc, ch.e_value FROM urs_rnacentral ur LEFT JOIN cmscan_run cr ON ur.id = cr.id LEFT JOIN urs_condensed uc ON ur.id = uc.id LEFT JOIN cmscan_hits ch ON ur.id = ch.id WHERE cr.id IS NOT NULL AND uc.rfam_acc IS NULL AND ch.hit_rfam_acc IS NULL AND uc.rna_type NOT LIKE 'tRNA' AND uc.rna_type NOT LIKE 'rRNA' AND uc.rna_type NOT LIKE 'piRNA' AND ur.len > 30 AND ur.len < 200 ORDER BY uc.db"
+
+df_newfamfilter = pd.read_sql_query(
+    query_newfamfilter,
+    connection,
+    index_col = None,
+    coerce_float = True,
+    params = None,
+    parse_dates = None,
+    chunksize = None
+    )
+
+#.....Table with links.....
+df_newfamfilter = df_newfamfilter.sort(["db", "rna_type", "len"], ascending = [0,0,0])
+table_out = df_newfamfilter[["id","len","db","rna_type"]]
+
+urs = list(df_newfamfilter["id"])
+d_urs = {}
+for x in urs:
+        d_urs[x] = '<a href="http://rnacentral.org/rna/{0}">{0}</a>'.format(x)
+
+table_out['id'].replace(d_urs, inplace = True)
+table = FF.create_table(table_out)
+plotly.offline.plot(table, filename = newfamilyurs_table)
+
+#-----Pie charts per group
+#.....Same hit pie.....
+data = Data([
+    Pie(
+        hoverinfo = 'label+percent+value',
+        sort = True,
+        textinfo = "none",
+        name = "Same hit",
+        labels = sig_rnatype_table.index,
+        values = sig_rnatype_table["samehit"]
+    )
+])
+layout = Layout(
+    autosize = True,
+    margin = Margin(
+        t = 180,
+        b = 50,
+    ),
+    height = 633,
+    title = 'Same hit group',
+    width = 1332,
+    showlegend = False
+)
+fig = Figure(data = data, layout = layout)
+plotly.offline.plot(fig, filename = "pie_confhit.html")
+
+#.....Conflicting hit pie.....
+data = Data([
+    Pie(
+        hoverinfo = 'label+percent+value',
+        sort = True,
+        textinfo = "none",
+        name = "Conflicting hit",
+        labels = sig_rnatype_table.index,
+        values = sig_rnatype_table["confhit"]
+    )
+])
+layout = Layout(
+    autosize = True,
+    margin = Margin(
+        t = 180,
+        b = 50,
+    ),
+    height = 633,
+    title = 'Conflicing hit group',
+    width = 1332,
+    showlegend = False
+)
+fig = Figure(data = data, layout = layout)
+plotly.offline.plot(fig, filename = "pie_confhit.html")
+
+#.....Lost in scan pie.....
+data = Data([
+    Pie(
+        hoverinfo = 'label+percent+value',
+        sort = True,
+        textinfo = "none",
+        name = "Lost in scan",
+        labels = sig_rnatype_table.index,
+        values = sig_rnatype_table["lostscan"]
+    )
+])
+layout = Layout(
+    autosize = True,
+    margin = Margin(
+        t = 180,
+        b = 50,
+    ),
+    height = 633,
+    title = 'Lost in scan group',
+    width = 1332,
+    showlegend = False
+)
+fig = Figure(data = data, layout = layout)
+plotly.offline.plot(fig, filename = "pie_lostscan.html")
+
+#.....New members pie.....
+data = Data([
+    Pie(
+        hoverinfo = 'label+percent+value',
+        sort = True,
+        textinfo = "none",
+        name = "New members",
+        labels = sig_rnatype_table.index,
+        values = sig_rnatype_table["newmem"]
+    )
+])
+layout = Layout(
+    autosize = True,
+    margin = Margin(
+        t = 180,
+        b = 50,
+    ),
+    height = 633,
+    title = 'New members group',
+    width = 1332,
+    showlegend = False
+)
+fig = Figure(data = data, layout = layout)
+plotly.offline.plot(fig, filename = "pie_newmem.html")
+
+#.....New family pie.....
+data = Data([
+    Pie(
+        hoverinfo = 'label+percent+value',
+        sort = True,
+        textinfo = "none",
+        name = "New family",
+        labels = sig_rnatype_table.index,
+        values = sig_rnatype_table["newfam"]
+    )
+])
+layout = Layout(
+    autosize = True,
+    margin = Margin(
+        t = 180,
+        b = 50,
+    ),
+    height = 633,
+    title = 'New family group',
+    width = 1332,
+    showlegend = False
+)
+fig = Figure(data = data, layout = layout)
+plotly.offline.plot(fig, filename = "pie_newfam.html")
