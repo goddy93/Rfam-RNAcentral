@@ -3,7 +3,7 @@ from Bio import SeqIO
 import pandas as pd
 
 input_file = sys.argv[1]
-output_file = input_file + "_seq-ids.txt"
+output_file = sys.argv[2]
 
 ids = []
 
