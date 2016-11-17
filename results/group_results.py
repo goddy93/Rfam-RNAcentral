@@ -106,10 +106,10 @@ dict_allgroups = {"Same hit": len(df_tot) - len(doublehit_list) - len(df_lostsca
 labels = dict_allgroups.keys()
 values = dict_allgroups.values()
 dict_colors = {"Same hit": "rgb(215,25,28)",
-		"Conflicting hits": "rgb(209, 79, 81)",
-		"Lost in scan": "rgb(214, 115, 117)",
-		"New members":  "rgb(44,123,182)",
-		"New families": "rgb(84, 154, 206)"
+		"Conflicting hits": "rgb(135, 16, 16)",
+		"Lost in scan": "rgb(199, 31, 30)",
+		"New members":  "rgb(19,46,131)",
+		"New families": "rgb(25, 148, 146)"
 		}
 
 #.....Graph.....
@@ -208,9 +208,9 @@ trace2 = Bar(
          y = rnatype_table["confhit"],
          hoverinfo = "none",
          marker = Marker(
-         color = 'rgb(209, 79, 81)',
+         color = 'rgb(135, 16, 16)',
             line = Line(
-             color = 'rgb(209, 79, 81)'
+             color = 'rgb(135, 16, 16)'
             )
             ),
          name = 'Conflicting hit',
@@ -222,9 +222,9 @@ trace3 = Bar(
         y = rnatype_table["lostscan"],
         hoverinfo = "none",
         marker = Marker(
-        color = 'rgb(214, 115, 117)',
+        color = 'rgb(199, 31, 30)',
         line = Line(
-            color = 'rgb(214, 115, 117)'
+            color = 'rgb(199, 31, 30)'
         )
      ),
     name = 'Lost in scan',
@@ -236,9 +236,9 @@ trace4 = Bar(
         y = rnatype_table["newmem"],
         hoverinfo = "none",
         marker = Marker(
-        color = 'rgb(44,123,182)',
+        color = 'rgb(19,46,131)',
         line = Line(
-            color = 'rgb(44,123,182)'
+            color = 'rgb(19,46,131)'
         )
     ),
     name = 'New members',
@@ -250,9 +250,9 @@ trace5 = Bar(
         y = rnatype_table["newfam"],
         hoverinfo = "none",
         marker = Marker(
-        color = 'rgb(84, 154, 206)',
+        color = 'rgb(25, 148, 146)',
         line = Line(
-            color = 'rgb(84, 154, 206)'
+            color = 'rgb(25, 148, 146)'
         )
     ),
     name = 'New family',
@@ -328,9 +328,9 @@ trace2 = Bar(
          y = sig_rnatype_table["confhit"],
          hoverinfo = "value",
          marker = Marker(
-         color = 'rgb(209, 79, 81)',
+         color = 'rgb(135, 16, 16)',
             line = Line(
-             color = 'rgb(209, 79, 81)'
+             color = 'rgb(135, 16, 16)'
             )
             ),
          name = 'Conflicting hit',
@@ -342,9 +342,9 @@ trace3 = Bar(
         y = sig_rnatype_table["lostscan"],
         hoverinfo = "value",
         marker = Marker(
-        color = 'rgb(214, 115, 117)',
+        color = 'rgb(199, 31, 30)',
         line = Line(
-            color = 'rgb(214, 115, 117)'
+            color = 'rgb(199, 31, 30)'
         )
      ),
     name = 'Lost in scan',
@@ -356,9 +356,9 @@ trace4 = Bar(
         y = sig_rnatype_table["newmem"],
         hoverinfo = "value",
         marker = Marker(
-        color = 'rgb(44,123,182)',
+        color = 'rgb(19,46,131)',
         line = Line(
-            color = 'rgb(44,123,182)'
+            color = 'rgb(19,46,131)'
         )
     ),
     name = 'New members',
@@ -370,9 +370,9 @@ trace5 = Bar(
         y = sig_rnatype_table["newfam"],
         hoverinfo = "value",
         marker = Marker(
-        color = 'rgb(84, 154, 206)',
+        color = 'rgb(25, 148, 146)',
         line = Line(
-            color = 'rgb(84, 154, 206)'
+            color = 'rgb(25, 148, 146)'
         )
     ),
     name = 'New family',
