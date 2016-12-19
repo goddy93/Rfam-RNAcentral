@@ -8,7 +8,7 @@
 #MY_FILES
 /parser_cmscan/files/*
 /database/files/*
-/fasta_slicer/files/*
+/fasta_tools/files/*
 /results/files/*
 /cmscan_results/clean_tables/*
 /cmscan_results/query_files/*
