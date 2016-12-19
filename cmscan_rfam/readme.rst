@@ -1,18 +1,58 @@
 Description
 ===========
-Script and options for submitting **INFERNAL 1.1.2 cmscan** job to cluster with specific options.
+Scripts and options for submitting **INFERNAL 1.1.2 cmscan** job to LSF cluster with specific options.
 
-``cmscan`` options
-===================
+`cmscan_rfam.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/cmscan_rfam.sh>`_
+	Generic job submission script with selected options
 
-.. code:: bash
+`rename.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/rename.sh>`_
+	Rename ``FASTA`` file slices to ``cms_rnac_{i}``
 
-	cmscan --tblout [tblout_path] -Z 12063.99847 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin [clanin_path] [cm_path] [input_path]
+`shfile_generator.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/shfile_generator.py>`_
+	Makes a ``.sh`` file for each ``FASTA`` file slice in an input dir. 
+
+
+`shfile_generator.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/shfile_generator.py>`_
+======================
+Makes the ``.sh`` files ready to be submitted as jobs to LSF cluster, as well as the dirs for the output. It uses the name of the ``FASTA`` file slices for the output and job names. (The paths for the output, the location of *Infernal* are fixed, should be changed.)
+
+Use
+---
+
+.. code ::
+
+cd [path/to/cmscan_results/]
+./shfile_generator.py [path/to/dir/with_fasta_files]
+
+
+Options for *job* (as shown in `cmscan_rfam.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/cmscan_rfam.sh>`_)
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code :: 
+
+#BSUB -q mpi-rh7
+#BSUB -J [job_name]
+#BSUB -o [path/jobouput.txt]
+#BSUB -M 10000
+#BSUB -R "rusage[mem=10000]"
+#BSUB -n 4
+#BSUB -R span[hosts=1]
+#BSUB -a openmpi mpiexec
+#BSUB -mca btl ^openib
+#BSUB -np 4
+
+Options for ``cmscan`` (as shown in `cmscan_rfam.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/cmscan_rfam.sh>`_)
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code ::
+
+cmscan --tblout [tblout_path.tbl] -Z 12063.99847 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin [clanin_path] [cm_path] [input_path]
+
 
 For details check `INFERNAL User guide <http://eddylab.org/infernal/Userguide.pdf>`_
 
 Z option
---------
+^^^^^^^^^
 The selected Z parameter is 12063.99847 Mb, obtained through the following process:
 
 Run the ``esl-seqstat`` tool from Infernal:
@@ -38,87 +78,3 @@ Output looks like this:
 	Z = Number of residues * 2 / 1000000 
 
 Which in this case = ``12063.99847``
-
-
-Cluster login
-=============
-
-.. code:: bash
-
-	username@ebi-005.ebi.ac.uk
-	module load mpi/openmpi-x86_64
-
-
-Job submission script
-=====================
-
-What's in ``cmscan_rfam.sh`` ?
-----------------------------
-The job submission script with specific ``bsub`` and the ``cmscan`` options.
-
-How to use
-----------
-Paths/files in the following lines should be specified:
-
-.. code:: bash
-
-	#BSUB -J [job_name]
-	#BSUB -o [path/jobouput.txt]
-
-	#PATHS
-	input_path="path/input.fasta"
-	tblout_path="path/tblout.txt"
-
-Submission
-----------
-
-.. code:: bash
-
-	bsub < cmscan_rfam.sh 
-
-Example
--------
-Change the following lines and save as ``cmscan_rfam_sample.sh``:
-
-.. code:: bash
-
-	#BSUB -J cmscan_1
-	#BSUB -o /nfs/gns/homes/nataquinones/cmscan/job_out/cmscan_1.txt
-
-	#PATHS
-	input_path="/nfs/gns/homes/nataquinones/fasta_slicer/files/rnacentral.fastagroup_1.fasta"
-	tblout_path="/nfs/gns/homes/nataquinones/cmscan/tables/cmscan_tbl_1.txt"
-
-Submit job:
-
-.. code:: bash
-
-	bsub < cmscan_rfam_sample.sh 
-
-
-Long job submission
-===================
-Alternatively, the whole options can be specified after ``bsub``:
-
-.. code:: bash
-
-	bsub -q mpi-rh7 -J [job_name] -o [job_output] -M 10000 -R "rusage[mem=10000]" -n 4 -R span[hosts=1] -a openmpi mpiexec -mca btl ^openib -np 4 /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/src/cmscan --tblout [tblout_file.txt] -Z 12063.99847 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/testsuite/Rfam.12.1.clanin /nfs/gns/homes/nataquinones/RfamCM/Rfam.cm [input_file.fasta]
-
-
-Example
--------
-For:
-
-.. code:: bash
-
-	job_name = cmscan_1
-	job_output = /nfs/gns/homes/nataquinones/cmscan/job_out/cmscan_1.txt
-	tblout_file.txt = /nfs/gns/homes/nataquinones/cmscan/tables/cmscan_tbl_1.txt
-	input_file.fasta = /nfs/gns/homes/nataquinones/fasta_slicer/files/rnacentral.fastagroup_1.fasta
-
-Submission would be:
-
-.. code:: bash
-
-	bsub -q mpi-rh7 -J cmscan_1 -o /nfs/gns/homes/nataquinones/cmscan/job_out/cmscan_1.txt -M 10000 -R "rusage[mem=10000]" -n 4 -R span[hosts=1] -a openmpi mpiexec -mca btl ^openib -np 4 /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/src/cmscan --tblout /nfs/gns/homes/nataquinones/cmscan/tables/cmscan_tbl_1.txt -Z 12063.99847 --noali --rfam --cut_ga --acc --nohmmonly --notextw --cpu 4 --fmt 2 --clanin /nfs/production/xfam/rfam/software/infernal_rh7/infernal-1.1.2/testsuite/Rfam.12.1.clanin /nfs/gns/homes/nataquinones/RfamCM/Rfam.cm /nfs/gns/homes/nataquinones/fasta_slicer/files/rnacentral.fastagroup_1.fasta
-
