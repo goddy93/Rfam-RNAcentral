@@ -10,3 +10,5 @@
 /database/files/*
 /fasta_slicer/files/*
 /results/files/*
+/cmscan_results/clean_tables/*
+/cmscan_results/query_files/*
