@@ -59,13 +59,13 @@ All the ``.sh`` files are placed in the same directory and submited in a group:
 
 2. Build database
 ^^^^^^^^^^^^^^^^^	
-2.1 Parse cmscan tables
+2.1 Parse cmscan tables (`parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_)
 ~~~~~~~~~~~~~~~~~~~~~~~~
-The ``.tbl`` files are parsed as described in `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ to generate the files that are then loaded into the database.
+The ``.tbl`` files are parsed with `parser_cmscan.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/parser_cmscan/parser_cmscan.py>`_ to generate the files that are then loaded into the database.
 
-2.2 Tables
-~~~~~~~~~~
-The database consists of 6 tables that are created and loaded as specified in `readme_tables.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_ 
+2.2 Make and load tables (`database <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/database>`_)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The database consists of 6 tables that are created and loaded as specified in `database/readme_tables.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_ 
 
 +-------------------+---------------------------------------------------------------------------------+
 | ``cmscan_hits``   |    Contains information of the output cmscan tables                             |
