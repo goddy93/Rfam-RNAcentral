@@ -78,3 +78,13 @@ Output looks like this:
 	Z = Number of residues * 2 / 1000000 
 
 Which in this case = ``12063.99847``
+
+Job output
+***********
+The ``.sh`` file produces ``.out``, ``.err`` and Infernal's table output as ``.tbl`` in the following directories:
+
+``~/cmscan/err/cms_rnac_{i}.err``
+
+``~/cmscan/output/cms_rnac_{i}.out`` 
+
+``~/cmscan/tables/cms_rnac_{i}.tbl``
