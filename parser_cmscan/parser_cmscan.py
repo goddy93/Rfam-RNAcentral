@@ -6,10 +6,11 @@ outputfile = sys.argv[2]
 
 df = pd.read_table(
 	inputfile, 
-	skiprows=[0,1], 
+	comment="#", 
 	engine="python", 
 	sep="\s*|-\n", 
-	header=None
+	header=None,
+	usecols=range(20)
 	)
 
 df = df[[3,2,1,5,19, 17]] 
