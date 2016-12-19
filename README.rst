@@ -1,5 +1,7 @@
 Rfam-RNAcentral
 ===============
+Contents
+********
 `cmscan_results <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results>`_
   Uses ``database`` to generate plots. Includes script to generate pie chart showing the URSs belonging to each group (see database), two "rna_type" cleaners to generate "rna_type" bars with members per group.
 
@@ -17,3 +19,102 @@ Rfam-RNAcentral
 
 `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_
   Takes *INFERNAL cmscan* table output file and parses it into tab delimited dataframe with the best scored hits.
+
+Project objective
+*****************
+Characterize the relationship between *Rfam* and *RNAcentral* databases by scanning RNAcentral with the Rfam covariance model. This allows to explore the overlap (in terms of rna_type, database of origin, etc.), review inconsistencies, assess sequence coverage and search for potential new families.
+
+Workflow
+*********
+1. Scan (`cmscan_results <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results>`_)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.1 Slice big FASTA file with all RNAcentral URSs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Slice ``rnacentral_nhmmer.fasta`` with `fasta_tools/fasta_slicer.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_tools/fasta_slicer.py>`_
+
+  The file is to large for it to be ``cmscan``-ned in a single job, so it was sliced into 470 files. The ``rnacentral_nhmmer.fasta`` file should be used to avoid problems with some of the *Infernal* and *Easel* tools.
+
+1.2 Rename slices
+~~~~~~~~~~~~~~~~~
+Rename slices with `cmscan_rfam/rename.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/sh_filegen/rename.sh>`_
+
+  This renames them into ``cms_rnac_{i}.fasta`` for each *i* slice to have an easier name file to handle. (This should be integrated into the ``fasta_slicer.py`` and this section removed.) 
+
+1.3 Generate ``.sh`` files for job submission
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The files can be generated with a script like `cmscan_rfam/shfile_generator.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/sh_filegen/shfile_generator.py>`_
+
+  The selection of the ``cmscan`` options is detailed in the `cmscan_rfam/readme.srt <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/readme.rst>`_ and a generic ``.sh`` file looks like `/cmscan_rfam/cmscan_rfam.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/cmscan_rfam.sh>`_ 
+
+1.4 Submit jobs
+~~~~~~~~~~~~~~~
+All the ``.sh`` files are placed in the same directory and submited in a group:
+
+.. code:: bash
+
+  for file in ./*.sh
+    do
+    bsub -g /rnacrfam < $file
+  done
+
+2. Build database
+^^^^^^^^^^^^^^^^^	
+2.1 Parse cmscan tables
+~~~~~~~~~~~~~~~~~~~~~~~~
+The ``.tbl`` files are parsed as described in `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_ to generate the files that are then loaded into the database.
+
+2.2 Tables
+~~~~~~~~~~
+The database consists of 6 tables that are created and loaded as specified in `readme_tables.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_ 
+
++-------------------+---------------------------------------------------------------------------------+
+| ``cmscan_hits``   |    Contains information of the output cmscan tables                             |
++-------------------+---------------------------------------------------------------------------------+
+| ``cmscan_run``    |    Contains all the URSs from the file                                          |
++-------------------+---------------------------------------------------------------------------------+
+|``id_mapping``     |   Contains the linked databases to each URS, including the ``rna_type``         |
++-------------------+---------------------------------------------------------------------------------+
+|``taxonomy``       |   Contains ncbi tax id                                                          |
++-------------------+---------------------------------------------------------------------------------+
+|``urs_condensed``  |  Uses ``id_mapping`` table and concats fields to make "group queries" easier    |
++-------------------+---------------------------------------------------------------------------------+
+|``urs_rnacentral`` | Contains all the URSs and the length of the related sequence                    |
++-------------------+---------------------------------------------------------------------------------+
+
+3. Summary results
+^^^^^^^^^^^^^^^^^^^	
+3.1 Groups
+~~~~~~~~~~
+The ``MySQL`` queries to filter them are described in `readme_queries.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_queries.rst>`_ The groups are defined as:
+
++----------------------------------------------------------+----------------------------------+
+| Rfam                                                     | No Rfam                          |
++---------------------------------------+------------------+-----------------+----------------+
+| Hits                                  | No hits          | Hits            | No hits        |
++-----------------+---------------------+                  |                 |                |
+| Same            | Not-same            |                  |                 |                |
++-----------------+---------------------+------------------+-----------------+----------------+
+| **SAME HIT**    | **CONFLICTING HIT** | **LOST IN SCAN** | **NEW MEMBERS** | **NEW FAMILY** |
++-----------------+---------------------+------------------+-----------------+----------------+
+
+3.2 Extract information from queries and plot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+There are two options for this:
+
+a. Quering directly in the python script, using ``sqlalchemy``
+
+    This is useful if the database is to be updated constantly, nevertheless the script is very slow and it is a very inefficient process if the plots are generated trough separate plots. An example of this is 
+
+b. Saving the queries as tables and calling them from the python script
+
+  The queries for each group are saved as tab delimited tables, trough something like:
+  
+  .. code:: SQL
+  
+    INTO OUTFILE [file_name]
+    FIELDS TERMINATED BY '\t'
+    ENCLOSED BY ""
+    ESCAPED BY ""
+    LINES TERMINATED BY '\n';
+
+  And then a script that calls those tables, as in `cmscan_results <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results>`_ 
