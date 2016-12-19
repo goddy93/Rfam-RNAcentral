@@ -1,5 +1,5 @@
-cmscan_rfam
-===========
+cmscan_rfam readme
+==================
 
 Contents
 ********
