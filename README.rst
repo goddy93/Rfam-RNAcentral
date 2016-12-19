@@ -65,7 +65,7 @@ The ``.tbl`` files are parsed with `parser_cmscan.py <https://github.com/nataqui
 
 2.2 Make and load tables (`database <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/database>`_)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The database consists of 6 tables that are created and loaded as specified in `database/readme_tables.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_ 
+The database consists of 6 tables that are created and loaded as specified in `database <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/database>`_ 
 
 +-------------------+---------------------------------------------------------------------------------+
 | ``cmscan_hits``   |    Contains information of the output cmscan tables                             |
@@ -85,7 +85,7 @@ The database consists of 6 tables that are created and loaded as specified in `d
 ^^^^^^^^^^^^^^^^^^^	
 3.1 Groups
 ~~~~~~~~~~
-The ``MySQL`` queries to filter them are described in `readme_queries.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_queries.rst>`_ The groups are defined as:
+The ``MySQL`` queries to filter them are described in `readme_queries.rst <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/readme_queries.rst>`_ The groups are defined as:
 
 +----------------------------------------------------------+----------------------------------+
 | Rfam                                                     | No Rfam                          |
