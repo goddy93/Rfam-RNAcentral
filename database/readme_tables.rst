@@ -1,8 +1,22 @@
 readme_tables
 ========================
++-------------------+---------------------------------------------------------------------------------+
+| ``cmscan_hits``   |    Contains information of the output cmscan tables                             |
++-------------------+---------------------------------------------------------------------------------+
+| ``cmscan_run``    |    Contains all the URSs from the file                                          |
++-------------------+---------------------------------------------------------------------------------+
+|``id_mapping``     |   Contains the linked databases to each URS, including the ``rna_type``         |
++-------------------+---------------------------------------------------------------------------------+
+|``taxonomy``       |   Contains ncbi tax id                                                          |
++-------------------+---------------------------------------------------------------------------------+
+|``urs_condensed``  |  Uses ``id_mapping`` table and concats fields to make "group queries" easier    |
++-------------------+---------------------------------------------------------------------------------+
+|``urs_rnacentral`` | Contains all the URSs and the length of the related sequence                    |
++-------------------+---------------------------------------------------------------------------------+
+
 Table ``urs_rnacentral``
 ------------------------
-Table generated from output of ``fasta_seq-len.py`` script `(here) <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_tools/fasta_seq-len.py>`_. when running it for file ``rnacentral_nhmmer.fasta``.
+Table generated from output of `fasta_tools/fasta_seq-len.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_tools/fasta_seq-len.py>`_. when running it for file ``rnacentral_nhmmer.fasta``.
 
 .. code:: SQL
 
@@ -44,8 +58,6 @@ Table:
 
 	LOAD DATA LOCAL INFILE "path/to/taxonomy.txt" INTO TABLE taxonomy IGNORE 1 LINES;
 
-Resulting number of rows: 738575
-
 Table ``id_mapping``
 --------------------
 Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <http://rnacentral.org/downloads>`_
@@ -69,7 +81,6 @@ Table generated from the file ``id_mapping`` file in the `RNAcentral FTP site <h
 	ALTER TABLE id_mapping
 	ADD FOREIGN KEY (tax_id) REFERENCES taxonomy (ncbi_id);
 
-Resulting number of rows: 27980630
 
 Table ``cmscan_hits``
 ---------------------
