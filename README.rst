@@ -30,25 +30,24 @@ Workflow
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 1.1 Slice big FASTA file with all RNAcentral URSs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Slice ``rnacentral_nhmmer.fasta`` with `fasta_tools/fasta_slicer.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_tools/fasta_slicer.py>`_
+Slice ``rnacentral_nhmmer.fasta`` with `fasta_tools/fasta_slicer.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_tools/fasta_slicer.py>`_ (`readme/use <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/fasta_tools>`_)
 
   The file is to large for it to be ``cmscan``-ned in a single job, so it was sliced into 470 files. The ``rnacentral_nhmmer.fasta`` file should be used to avoid problems with some of the *Infernal* and *Easel* tools.
 
 1.2 Rename slices
 ~~~~~~~~~~~~~~~~~
-Rename slices with `cmscan_rfam/rename.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/sh_filegen/rename.sh>`_
+Rename slices with `cmscan_rfam/rename.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/rename.sh>`_
 
-  This renames them into ``cms_rnac_{i}.fasta`` for each *i* slice to have an easier name file to handle. (This should be integrated into the ``fasta_slicer.py`` and this section removed.) 
+  This renames them into ``cms_rnac_{i}.fasta`` for each *i* slice to have an easier name file to handle (which will also be used in the output and job submission). (This should be integrated into the ``fasta_slicer.py`` and this section removed.) 
 
 1.3 Generate ``.sh`` files for job submission
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The files can be generated with a script like `cmscan_rfam/shfile_generator.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/sh_filegen/shfile_generator.py>`_
-
-  The selection of the ``cmscan`` options is detailed in the `cmscan_rfam/readme.srt <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/readme.rst>`_ and a generic ``.sh`` file looks like `/cmscan_rfam/cmscan_rfam.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/cmscan_rfam.sh>`_ 
+The files can be generated with a script like `cmscan_rfam/shfile_generator.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/sh_filegen/shfile_generator.py>`_ (`readme <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/readme.rst>`_  with detailed ``cmscan`` options.)
+A generic ``.sh`` file looks like `/cmscan_rfam/cmscan_rfam.sh <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_rfam/cmscan_rfam.sh>`_ 
 
 1.4 Submit jobs
 ~~~~~~~~~~~~~~~
-All the ``.sh`` files are placed in the same directory and submited in a group:
+All the ``.sh`` files are placed in the same directory and were submited in a group:
 
 .. code:: bash
 
@@ -97,24 +96,38 @@ The ``MySQL`` queries to filter them are described in `readme_queries.rst <https
 | **SAME HIT**    | **CONFLICTING HIT** | **LOST IN SCAN** | **NEW MEMBERS** | **NEW FAMILY** |
 +-----------------+---------------------+------------------+-----------------+----------------+
 
-3.2 Extract information from queries and plot
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-There are two options for this:
+3.2 Extract information from queries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The *group queries* for each group are saved as tab delimited tables, through something like:
 
-a. Quering directly in the python script, using ``sqlalchemy``
+.. code:: SQL
 
-    This is useful if the database is to be updated constantly, nevertheless the script is very slow and it is a very inefficient process if the plots are generated trough separate plots. An example of this is 
+  SELECT *
+  FROM *
+  WHERE *
+  ... 
+  INTO OUTFILE [file_name]
+  FIELDS TERMINATED BY '\t'
+  ENCLOSED BY ""
+  ESCAPED BY ""
+  LINES TERMINATED BY '\n';
 
-b. Saving the queries as tables and calling them from the python script
+Names of the files and specific queries can be found in `cmscan_results/queries_astables <>`_
 
-  The queries for each group are saved as tab delimited tables, trough something like:
-  
-  .. code:: SQL
-  
-    INTO OUTFILE [file_name]
-    FIELDS TERMINATED BY '\t'
-    ENCLOSED BY ""
-    ESCAPED BY ""
-    LINES TERMINATED BY '\n';
+3.3 rna_type cleanup
+~~~~~~~~~~~~~~~~~~~~
+The ``rna_type`` annotation tends to be inconsistent across databases. Since a unique ``rna_type`` is assigned for each URS by concatenating the different strings (see `Table urs_condensed <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_) this causes a cluttered set of rna types that are redundant or contradicting.
 
-  And then a script that calls those tables, as in `cmscan_results <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results>`_ 
+To clean-up the ``rna_type`` there are two scripts with dictonaries that substitute each type:
+
+a. `00.rnatype_cleanup.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/00.rnatype_cleanup.py>`_ (does it strictly, doesn't combine groups like ``xRNA`` with ``xRNA,other``) 
+
+b. `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/00.rnatype_cleanup_lato.py>`_ (does it broadly, merges groups like ``xRNA`` and ``xRNA,other``
+
+3.4 Plots
+~~~~~~~~~~
+- `01.pie_global.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/01.pie_global.py>`_ : Pie chart with the count of all the URS assigned to each *group* (Same hit, Conflicting hit, Lost in scan, New members and New families) 
+
+- `02.bar_rnatype.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/02.bar_rnatype.py>`_ : Bar chart that separates ``rna_types`` per *group*.
+
+      *An alternative for steps 3.3 and 3.4 is quering directly in the python script, using ``sqlalchemy``. This is useful if the database is to be updated constantly, but proved to be very slow and very inefficient process if the plots are generated trough separate scripts. An example of how this could work is shown in `sqlalch_plots<>`_
