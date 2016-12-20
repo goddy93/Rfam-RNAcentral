@@ -105,7 +105,6 @@ The *group queries* for each group are saved as tab delimited tables, through so
   SELECT *
   FROM *
   WHERE *
-  ... 
   INTO OUTFILE [file_name]
   FIELDS TERMINATED BY '\t'
   ENCLOSED BY ""
