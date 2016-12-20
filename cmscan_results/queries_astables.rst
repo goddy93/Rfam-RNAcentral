@@ -1,183 +1,168 @@
+**query_tot**
 
-#DATAFLOW GENERAL
-1. Guardar las queries como archivos
-2. Correr los scripts de count
-3. Correr el (los) script(s) de graficar
+.. code:: SQL
 
+ SELECT id
+ FROM cmscan_run
 
+ INTO OUTFILE './query_tot'
+ FIELDS TERMINATED BY '\t'
+ ENCLOSED BY ""
+ ESCAPED BY ""
+ LINES TERMINATED BY '\n';
 
-#1. GUARDAR LAS QUERIES COMO ARCHIVOS
-cd Desktop
-mysqllocal
-USE rnac_rfam;
+**query_samehit**
 
-#Correr queries (abajo)
+.. code:: SQL
 
-#Abrir y guardar bien con:
-cd Desktop/tmp/
+ SELECT
+         ur.id,
+         ur.len,
+         uc.db,
+         uc.rna_type,
+         uc.rfam_acc,
+         uc.tax_id,
+         ch.hit_rfam_acc,
+         ch.hit_clan_acc,
+         ch.e_value
+ FROM urs_rnacentral ur
+ LEFT JOIN cmscan_run cr ON ur.id = cr.id
+ LEFT JOIN urs_condensed uc ON ur.id = uc.id
+ LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+ WHERE cr.id IS NOT NULL -- ran
+ AND uc.rfam_acc IS NOT NULL -- in Rfam
+ AND ch.hit_rfam_acc IS NOT NULL -- got hit
+ AND uc.rfam_acc = ch.hit_rfam_acc -- same
 
- /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /tmp/newfam
+ INTO OUTFILE './query_samehit'
+ FIELDS TERMINATED BY '\t'
+ ENCLOSED BY ""
+ ESCAPED BY ""
+ LINES TERMINATED BY '\n';
 
-#------------------------------------------------
-#query_tot
-SELECT id
-FROM cmscan_run
+**query_confhit**
 
-INTO OUTFILE '/tmp/query_tot'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
+.. code:: SQL
 
-#------------------------------------------------
-#query_samehit
-SELECT
-        ur.id,
-        ur.len,
-        uc.db,
-        uc.rna_type,
-        uc.rfam_acc,
-        uc.tax_id,
-        ch.hit_rfam_acc,
-        ch.hit_clan_acc,
-        ch.e_value
-FROM urs_rnacentral ur
-LEFT JOIN cmscan_run cr ON ur.id = cr.id
-LEFT JOIN urs_condensed uc ON ur.id = uc.id
-LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+ SELECT
+         ur.id,
+         ur.len,
+         uc.db,
+         uc.rna_type,
+         uc.rfam_acc,
+         uc.tax_id,
+         ch.hit_rfam_acc,
+         ch.hit_clan_acc,
+         ch.e_value
+ FROM urs_rnacentral ur
+ LEFT JOIN cmscan_run cr ON ur.id = cr.id
+ LEFT JOIN urs_condensed uc ON ur.id = uc.id
+ LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+ WHERE cr.id IS NOT NULL -- ran
+ AND uc.rfam_acc IS NOT NULL -- in Rfam
+ AND ch.hit_rfam_acc IS NOT NULL -- got hit
+ AND uc.rfam_acc != ch.hit_rfam_acc -- different
 
-WHERE cr.id IS NOT NULL -- ran
+ INTO OUTFILE './query_confhit'
+ FIELDS TERMINATED BY '\t'
+ ENCLOSED BY ""
+ ESCAPED BY ""
+ LINES TERMINATED BY '\n';
 
-AND uc.rfam_acc IS NOT NULL -- in Rfam
-AND ch.hit_rfam_acc IS NOT NULL -- got hit
-AND uc.rfam_acc = ch.hit_rfam_acc -- same
+**query_lostscan**
 
-INTO OUTFILE '/tmp/query_samehit'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
+.. code:: SQL
 
-#------------------------------------------------
-#query_confhit
-SELECT
-        ur.id,
-        ur.len,
-        uc.db,
-        uc.rna_type,
-        uc.rfam_acc,
-        uc.tax_id,
-        ch.hit_rfam_acc,
-        ch.hit_clan_acc,
-        ch.e_value
-FROM urs_rnacentral ur
-LEFT JOIN cmscan_run cr ON ur.id = cr.id
-LEFT JOIN urs_condensed uc ON ur.id = uc.id
-LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+ SELECT
+         ur.id,
+         ur.len,
+         uc.db,
+         uc.rna_type,
+         uc.rfam_acc,
+         uc.tax_id,
+         ch.hit_rfam_acc,
+         ch.hit_clan_acc,
+         ch.e_value
+ FROM urs_rnacentral ur
+ LEFT JOIN cmscan_run cr ON ur.id = cr.id
+ LEFT JOIN urs_condensed uc ON ur.id = uc.id
+ LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+ WHERE cr.id IS NOT NULL -- ran
+ AND uc.rfam_acc IS NOT NULL -- in Rfam
+ AND ch.hit_rfam_acc IS NULL -- no hit
 
-WHERE cr.id IS NOT NULL -- ran
+ INTO OUTFILE './query_lostscan'
+ FIELDS TERMINATED BY '\t'
+ ENCLOSED BY ""
+ ESCAPED BY ""
+ LINES TERMINATED BY '\n';
 
-AND uc.rfam_acc IS NOT NULL -- in Rfam
-AND ch.hit_rfam_acc IS NOT NULL -- got hit
-AND uc.rfam_acc != ch.hit_rfam_acc -- different
+**query_newmem**
 
-INTO OUTFILE '/tmp/query_confhit'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
-#------------------------------------------------
-#query_lostscan
-SELECT
-        ur.id,
-        ur.len,
-        uc.db,
-        uc.rna_type,
-        uc.rfam_acc,
-        uc.tax_id,
-        ch.hit_rfam_acc,
-        ch.hit_clan_acc,
-        ch.e_value
-FROM urs_rnacentral ur
-LEFT JOIN cmscan_run cr ON ur.id = cr.id
-LEFT JOIN urs_condensed uc ON ur.id = uc.id
-LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+.. code:: SQL
 
-WHERE cr.id IS NOT NULL -- ran
+   SELECT
+           ur.id,
+           ur.len,
+           uc.db,
+           uc.rna_type,
+           uc.rfam_acc,
+           uc.tax_id,
+           ch.hit_rfam_acc,
+           ch.hit_clan_acc,
+           ch.e_value
+   FROM urs_rnacentral ur
+   LEFT JOIN cmscan_run cr ON ur.id = cr.id
+   LEFT JOIN urs_condensed uc ON ur.id = uc.id
+   LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+   WHERE cr.id IS NOT NULL -- ran
+   AND uc.rfam_acc IS NULL -- not in Rfam
+   AND ch.hit_rfam_acc IS NOT NULL -- got hit
 
-AND uc.rfam_acc IS NOT NULL -- in Rfam
-AND ch.hit_rfam_acc IS NULL -- no hit
+   INTO OUTFILE './query_newmem'
+   FIELDS TERMINATED BY '\t'
+   ENCLOSED BY ""
+   ESCAPED BY ""
+   LINES TERMINATED BY '\n';
 
-INTO OUTFILE '/tmp/query_lostscan'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
+**query_newfam**
 
-#------------------------------------------------
-#query_newmem
-SELECT
-        ur.id,
-        ur.len,
-        uc.db,
-        uc.rna_type,
-        uc.rfam_acc,
-        uc.tax_id,
-        ch.hit_rfam_acc,
-        ch.hit_clan_acc,
-        ch.e_value
-FROM urs_rnacentral ur
-LEFT JOIN cmscan_run cr ON ur.id = cr.id
-LEFT JOIN urs_condensed uc ON ur.id = uc.id
-LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+.. code:: SQL
 
-WHERE cr.id IS NOT NULL -- ran
+  SELECT
+          ur.id,
+          ur.len,
+          uc.db,
+          uc.rna_type,
+          uc.rfam_acc,
+          uc.tax_id,
+          ch.hit_rfam_acc,
+          ch.hit_clan_acc,
+          ch.e_value
+  FROM urs_rnacentral ur
+  LEFT JOIN cmscan_run cr ON ur.id = cr.id
+  LEFT JOIN urs_condensed uc ON ur.id = uc.id
+  LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+  WHERE cr.id IS NOT NULL -- ran
+  AND uc.rfam_acc IS NULL -- not in Rfam
+  AND ch.hit_rfam_acc IS NULL -- no hit
 
-AND uc.rfam_acc IS NULL -- not in Rfam
-AND ch.hit_rfam_acc IS NOT NULL -- got hit
+  INTO OUTFILE './query_newfam'
+  FIELDS TERMINATED BY '\t'
+  ENCLOSED BY ""
+  ESCAPED BY ""
+  LINES TERMINATED BY '\n';
 
-INTO OUTFILE '/tmp/query_newmem'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
+**query_colapsedhits**
 
-#------------------------------------------------
-#query_newfam
-SELECT
-        ur.id,
-        ur.len,
-        uc.db,
-        uc.rna_type,
-        uc.rfam_acc,
-        uc.tax_id,
-        ch.hit_rfam_acc,
-        ch.hit_clan_acc,
-        ch.e_value
-FROM urs_rnacentral ur
-LEFT JOIN cmscan_run cr ON ur.id = cr.id
-LEFT JOIN urs_condensed uc ON ur.id = uc.id
-LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+.. code:: SQL
 
-WHERE cr.id IS NOT NULL -- ran
+  SELECT ch.id, GROUP_CONCAT(DISTINCT ch.hit_rfam_acc) AS families 
+  FROM cmscan_hits ch 
+  GROUP BY ch.id
 
-AND uc.rfam_acc IS NULL -- not in Rfam
-AND ch.hit_rfam_acc IS NULL -- no hit
-
-INTO OUTFILE '/tmp/query_newfam'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
-
-#------------------------------------------------
-#query_colapsedhits
-SELECT ch.id, GROUP_CONCAT(DISTINCT ch.hit_rfam_acc) AS families 
-FROM cmscan_hits ch 
-GROUP BY ch.id
-
-INTO OUTFILE '/tmp/query_colapsedhits'
-FIELDS TERMINATED BY '\t'
-ENCLOSED BY ""
-ESCAPED BY ""
-LINES TERMINATED BY '\n';
+  INTO OUTFILE './query_colapsedhits'
+  FIELDS TERMINATED BY '\t'
+  ENCLOSED BY ""
+  ESCAPED BY ""
+  LINES TERMINATED BY '\n';
