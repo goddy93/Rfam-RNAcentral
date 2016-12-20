@@ -129,4 +129,6 @@ b. `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/
 
 - `02.bar_rnatype.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/02.bar_rnatype.py>`_ : Bar chart that separates ``rna_types`` per *group*.
 
+- `03.bars_relevance.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/03.bars_relevance.py>`_ : Produces several bar plots of relevance measures. Separates ``rna_types`` into "want in Rfam" and "don't want in Rfam" groups.
+
       *An alternative for steps 3.3 and 3.4 is quering directly in the python script, using ``sqlalchemy``. This is useful if the database is to be updated constantly, but proved to be very slow and very inefficient process if the plots are generated trough separate scripts. An example of how this could work is shown in `sqlalch_plots<https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results/sqlalch_plots>`_
