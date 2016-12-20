@@ -111,11 +111,11 @@ The *group queries* for each group are saved as tab delimited tables, through so
   ESCAPED BY ""
   LINES TERMINATED BY '\n';
 
-Names of the files and specific queries can be found in `cmscan_results/queries_astables <>`_
+Names of the files and specific queries can be found in `cmscan_results/queries_astables <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/queries_astables.rst>`_
 
 3.3 rna_type cleanup
 ~~~~~~~~~~~~~~~~~~~~
-The ``rna_type`` annotation tends to be inconsistent across databases. Since a unique ``rna_type`` is assigned for each URS by concatenating the different strings (see `Table urs_condensed <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_) this causes a cluttered set of rna types that are redundant or contradicting.
+The ``rna_type`` annotation tends to be inconsistent across databases. Since a unique ``rna_type`` is assigned for each URS by concatenating the different strings (see `database/readme_tables:Table urs_condensed <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/database/readme_tables.rst>`_) this causes a cluttered set of rna types that are redundant or contradicting.
 
 To clean-up the ``rna_type`` there are two scripts with dictonaries that substitute each type:
 
@@ -129,4 +129,4 @@ b. `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/
 
 - `02.bar_rnatype.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/02.bar_rnatype.py>`_ : Bar chart that separates ``rna_types`` per *group*.
 
-      *An alternative for steps 3.3 and 3.4 is quering directly in the python script, using ``sqlalchemy``. This is useful if the database is to be updated constantly, but proved to be very slow and very inefficient process if the plots are generated trough separate scripts. An example of how this could work is shown in `sqlalch_plots<>`_
+      *An alternative for steps 3.3 and 3.4 is quering directly in the python script, using ``sqlalchemy``. This is useful if the database is to be updated constantly, but proved to be very slow and very inefficient process if the plots are generated trough separate scripts. An example of how this could work is shown in `sqlalch_plots<https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results/sqlalch_plots>`_
