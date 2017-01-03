@@ -232,31 +232,32 @@ def plotbars ( df_name, group1, group2, group3, group4, group5, filename ):
       "yref": "y"
     },
     {
-      "align": "left",
+      "align": "right",
       "font": {
         "color": "rgba(42, 42, 42, 1)", 
-        "size": 12
+        "size": 10
       }, 
       "showarrow": False, 
-      "text": "<b>NEGATIVES:</b><br>RNAs that get hit with Rfam CM", 
+      "text": "<b>NEGATIVES:</b><br>RNAs that don't get hit with Rfam CM", 
       "textangle": 0, 
       "xref": "paper", 
       "x": 1.21,
+      "xanchor": "auto",
       "yref": "paper",
       "y":0.99,
       "yanchor":"auto"
     },
     {
-      "align": "left",
+      "align": "right",
       "font": {
         "color": "rgba(42, 42, 42, 1)", 
-        "size": 12
+        "size": 10
       }, 
       "showarrow": False, 
-      "text": "<b>POSITIVES:</b><br>RNAs that don't get hit<br>with Rfam CM", 
+      "text": "<b>POSITIVES:</b><br>RNAs that get hit with Rfam CM", 
       "textangle": 0, 
       "xref": "paper", 
-      "x": 1.1589685124864277,
+      "x": 1.21,
       "xanchor": "auto",
       "yref": "paper",
       "y":0.9381530984204132,
