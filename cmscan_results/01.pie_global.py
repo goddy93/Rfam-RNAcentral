@@ -124,32 +124,15 @@ fig = Figure(data = data, layout = layout)
 plotly.offline.plot(fig, filename = allpiechart)
 
 #-----Sliced
-#.....Counts.....
-rnatype_newfam = pd.DataFrame(df_newfam["rna_type"].value_counts())
-rnatype_newfam.reset_index(level=0, inplace=True)
-rnatype_newfam.columns = ['rna_type', 'count']
-
-count_lncRNA1 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "lncRNA", 'count'])
-count_lncRNA2 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "lncRNA,snoRNA", 'count'])
-count_lncRNA3 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "lncRNA,other", 'count'])
-count_miRNA1 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "miRNA", 'count'])
-count_miRNA2 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "miRNA,other", 'count'])
-count_miRNA3 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "miRNA,siRNA", 'count'])
-count_miRNA4 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "miRNA,piRNA", 'count'])
-count_piRNA1 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "piRNA", 'count'])
-count_piRNA2 = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "piRNA,other", 'count'])
-count_rasiRNA = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "rasiRNA", 'count'])
-count_guideRNA = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "guide_RNA", 'count'])
-count_siRNA = int(rnatype_newfam.loc[rnatype_newfam['rna_type'] == "siRNA", 'count'])
-
-never_rfam = count_lncRNA1 + count_lncRNA2 + count_lncRNA3 + count_miRNA1 + count_miRNA2 + count_miRNA3 + count_miRNA4 + count_piRNA1 + count_piRNA2 + count_rasiRNA + count_guideRNA + count_siRNA 
+#....New slice (see consistency_check.xlsx)
+never_rfam = 459602
 
 #.....Data.....
 dict_allgroups = OrderedDict([
     ("Conflicting hits", len(doublehit_list)),
     ("Same hit", len(df_tot) - len(doublehit_list) - len(df_lostscan) - len(df_newmem) - len(df_newfam)),
     ("New members", len(df_newmem)),
-    ("Not for Rfam (lncRNA, miRNA, piRNA, rasiRNA, guideRNA, siRNA", never_rfam),
+    ("Not for Rfam (piRNA, rasiRNA, siRNA, lncRNA, etc.)", never_rfam),
     ("New families", len(df_newfam) - never_rfam),
     ("Lost in scan", len(df_lostscan))
         ])
