@@ -32,7 +32,7 @@ Workflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Slice ``rnacentral_nhmmer.fasta`` with `fasta_tools/fasta_slicer.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/fasta_tools/fasta_slicer.py>`_ (`readme/use <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/fasta_tools>`_)
 
-  The file is to large for it to be ``cmscan``-ned in a single job, so it was sliced into 470 files. The ``rnacentral_nhmmer.fasta`` file should be used to avoid problems with some of the *Infernal* and *Easel* tools.
+  The file is too large for it to be ``cmscan``-ned in a single job, so it was sliced into 470 files. The ``rnacentral_nhmmer.fasta`` file should be used to avoid problems with some of the *Infernal* and *Easel* tools.
 
 1.2 Rename slices
 ~~~~~~~~~~~~~~~~~
