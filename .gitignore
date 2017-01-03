@@ -6,6 +6,7 @@
 /cmscan_rfam/tests/*
 
 #MY_FILES
+/Icon?
 /parser_cmscan/files/*
 /database/files/*
 /fasta_tools/files/*
