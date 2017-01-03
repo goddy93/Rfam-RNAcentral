@@ -6,8 +6,8 @@ from plotly.graph_objs import *
 from plotly.tools import FigureFactory as FF
 
 #------Output files----
-woothsepgroups = "./plots/lato/03.bars_relevance.html"
-
+woothsepgroups = "./plots/lato/03.a.bars_relevance.html"
+categorypercent = "./plots/lato/03.b.bars_relevance.html"
 
 #------Read files----
 samehit = "./clean_tables/lato/df_samehit"
@@ -139,6 +139,7 @@ spec = round((sig_rnatype_table["newfam_per"].iloc[1] + sig_rnatype_table["losts
 
 
 #=====GRAPHICAL OUTPUTS=====
+#.....Main plot
 def plotbars ( df_name, group1, group2, group3, group4, group5, filename ):
     dict_colors = {group1: "rgb(215,25,28)",
        group2: "rgb(214, 105, 23)",
@@ -411,3 +412,78 @@ def plotbars ( df_name, group1, group2, group3, group4, group5, filename ):
     plotly.offline.plot(fig, filename = filename)
 
 plotbars( sig_rnatype_table, "samehit_per", "confhit_per", "lostscan_per", "newmem_per", "newfam_per", woothsepgroups)
+
+#.....Supporting plot (percentages of each category: for Rfam, not for Rfam and unclassified)
+tot = sig_rnatype_table["sum"].iloc[0]+sig_rnatype_table["sum"].iloc[1]+sig_rnatype_table["sum"].iloc[2]
+per_g1 = (sig_rnatype_table["sum"].iloc[0] / tot) * 100
+per_g2 = (sig_rnatype_table["sum"].iloc[1] / tot) * 100
+per_g3 = (sig_rnatype_table["sum"].iloc[2] / tot) * 100
+
+dict_colors2 = {"trace1": "rgb(150,150,150)",
+       "trace2": "rgb(82,82,82)",
+       "trace3": "rgb(0,0,0)"
+       }
+
+trace1 = go.Bar(
+    y=['Percentage of sequences in each category'],
+    x=[per_g1],
+    name = sig_rnatype_table.index[0],
+    hoverinfo = "x+name",
+    marker = Marker(
+                color = dict_colors2["trace1"]
+        ),
+    orientation = 'h'
+)
+trace2 = go.Bar(
+    y=['Percentage of sequences in each category'],
+    x=[per_g2],
+    name = sig_rnatype_table.index[1],
+    hoverinfo = "x+name",
+    marker = Marker(
+                color = dict_colors2["trace2"]
+        ),
+    orientation = 'h'
+)
+
+trace3 = go.Bar(
+    y=['Percentage of sequences in each category'],
+    x=[per_g3],
+    name = sig_rnatype_table.index[2],
+    hoverinfo = "x+name",
+    marker = Marker(
+                color = dict_colors2["trace3"]
+        ),
+    orientation = 'h'
+)
+
+data = [trace1, trace2, trace3]
+
+layout = {
+  "width": 1000,
+  "height": 350,
+  "barmode": "stack", 
+  "barnorm": "percent", 
+  "font": {"family": "Arial"}, 
+  'showlegend': False,
+  "margin": {"b": 200}, 
+  "plot_bgcolor": "#EFECEA",  
+  "title": "",
+  "bargap": 0.3, 
+  "titlefont": {"family": "Arial"}, 
+  "xaxis": {
+    "gridcolor": "#FFFFFF", 
+    "range": [0, 100], 
+    "showgrid": True, 
+    "title": "",
+    "ticksuffix": "%",
+    "type": "linear", 
+    "zeroline": False
+  }, 
+  "yaxis": {
+    "showticklabels": False
+  }
+}
+
+
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.plot(fig, filename = categorypercent)
