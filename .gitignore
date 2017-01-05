@@ -15,3 +15,5 @@
 /cmscan_results/query_files/*
 /cmscan_results/plots/*
 /new_fams/files/*
+/rfamp.sublime-project
+/rfamp.sublime-workspace
