@@ -1,20 +1,23 @@
 import pandas as pd
 
-# modified from https://github.com/GordonLab/metagenomic-pipeline/blob/master/Modules/tools/cdhit_parse.py
-
 cluster_file = open("./eunewfam.cluster.clstr", 'r')
 cluster_list = cluster_file.read()
 
 
 def read_clusters(cluster_list):
+    """
+    Modified from 
+    https://github.com/GordonLab/metagenomic-pipeline/blob/master/Modules/tools/cdhit_parse.py
+    This version makes a table that relates each FASTA
+    title > in the .clstr output to its cluster number
+    """
     cluster_db = {}
     cluster_db_count = {}
 
     unique_list = []
 
-
     # Split the file so that each cluster is it's own line
-    clusters  = cluster_list.split('>Cluster ')
+    clusters = cluster_list.split('>Cluster ')
 
     # Go through the cluster
     for line in clusters:
@@ -30,7 +33,7 @@ def read_clusters(cluster_list):
             # split at the newlines, so each sequence is on its own line
             hits = line.split('\n')
 
-            # For each hit split it to get the sequence name 
+            # For each hit split it to get the sequence name
             for i in hits:
                 # Split at the spaces
                 new = i.split(' ')
@@ -62,7 +65,7 @@ def read_clusters(cluster_list):
 
     return cluster_db
 
-a=read_clusters(cluster_list)
+a = read_clusters(cluster_list)
 df = pd.DataFrame()
 
 for j in range(0, len(a)):
@@ -71,4 +74,4 @@ for j in range(0, len(a)):
         b.append([a[str(j)][i], j])
     df = df.append(b)
 
-df.to_csv("./test", sep='\t', index = False)
+df.to_csv("./test", sep='\t', index=False)
