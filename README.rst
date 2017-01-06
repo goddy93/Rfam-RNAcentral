@@ -15,7 +15,7 @@ Contents
   Slices ``FASTA`` file, given the number of elements to be saved per file. Other minor tools for FASTA files included.
 
 `new_fams <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/new_fams>`_
-  (Nothing yet)
+  Set of scripts and tools to filter trough the *NEW FAMILY* group.
 
 `parser_cmscan <https://github.com/nataquinones/Rfam-RNAcentral/tree/master/parser_cmscan>`_
   Takes *INFERNAL cmscan* table output file and parses it into tab delimited dataframe with the best scored hits.
@@ -132,3 +132,28 @@ b. `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/
 - `03.bars_relevance.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/03.bars_relevance.py>`_ : Produces several bar plots of relevance measures. Separates ``rna_types`` into "want in Rfam" and "don't want in Rfam" groups.
 
       *An alternative for steps 3.3 and 3.4 is quering directly in the python script, using ``sqlalchemy``. This is useful if the database is to be updated constantly, but proved to be very slow and very inefficient process if the plots are generated trough separate scripts. An example of how this could work is shown in `sqlalch_plots<https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results/sqlalch_plots>`_
+
+4. Search for actual new families
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4.1 Filter interesting **NEW FAMILY** members.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+By using the table generated in step 3.3 and with the same criteria from `03.bars_relevance.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/03.bars_relevance.py>`_, a new group can be generated which includes the secuences that are: *a.* not in Rfam, *b.* not hit by the Rfam CM, and *c.* of interest for Rfam. This group is named **EU-NEW FAMILY** (real-new family).
+
+- `01.eu_pseudo_tables.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/01.eu_pseudo_tables.py>`_: Separates the file ``df_newfam`` generated through `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/00.rnatype_cleanup_lato.py>`_ into two table files: ``df_eunewfam`` which includes all the sequences with a ``rna_type`` of interest, and ``df_pseudonewfam``, which includes all the rest.
+
+4.2 Fetch sequence and publication information from RNAcentral
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `02.get_fasta.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/02.get_fasta.py>`_: Fetches from RNAcentral API the sequences for a list of URSs extracting it from a file like **df_eunewfam** (or *df_pseudonewfam*). Makes a single FASTA file with all.
+
+- `03.get_pub.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/03.get_pub.py>`_: Fetches from RNAcentral API all the publications information for a list of URSs extracting it from a file like **df_eunewfam** (or *df_pseudonewfam*). Makes a single table with all the publications related to all the URSs.
+
+4.3 Cluster sequences
+~~~~~~~~~~~~~~~~~~~~~~
+Cluster the ``FASTA`` file obtained in step 4.2 with CD-HIT-EST:
+
+.. code::
+
+  cd-hit-est -i eunewfam.fasta -o eunewfam.cluster -c 0.8 -n 4 -d 20 -s 0.5
+4.4 Filter
+~~~~~~~~~~
+- `04.cdhit_parser.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/04.cdhit_parser.py>`_: Takes ``.clstr`` output from CD-HIT-EST and makes a table with each sequence and the cluster number to which they were assigned.
