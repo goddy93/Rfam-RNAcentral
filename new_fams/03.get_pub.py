@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 
 EUNEWFAM_IN = "./files/df_eunewfam"  # input file
-EUNEWFAM_PUB_OUT = "./files/df_eunewfam.pub"  # output file
+EUNEWFAM_PUB_OUT = "./files/eunewfam.pub"  # output file
 
 
 def pubmed_id(urs_list, page_size, time_out):
