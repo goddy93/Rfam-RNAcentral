@@ -44,5 +44,15 @@ del df_pseudonewfam["group"]
 df_pseudonewfam.reset_index(drop=True, inplace=True)
 
 # save tables to csvs
-df_eunewfam.to_csv(eunewfam_out, sep="\t", na_rep="None", header=True, index=False)
-df_pseudonewfam.to_csv(pseudonewfam_out, sep="\t", na_rep="None", header=True, index=False)
+df_eunewfam.to_csv(
+    eunewfam_out,
+    sep="\t",
+    na_rep="None",
+    header=True,
+    index=False)
+df_pseudonewfam.to_csv(
+    pseudonewfam_out,
+    sep="\t",
+    na_rep="None",
+    header=True,
+    index=False)

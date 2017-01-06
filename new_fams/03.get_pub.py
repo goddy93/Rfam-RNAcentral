@@ -52,7 +52,6 @@ DF_EUNEWFAM = pd.read_table(
 
 # make list from id column
 EUNEWFAM_LIST = DF_EUNEWFAM["id"].tolist()
-EUNEWFAM_LIST = EUNEWFAM_LIST[0:10]
 
 # input function args
 PAGE_LENGTH = 50  # results to be checked from RNAcentral API, max 100
