@@ -1,0 +1,19 @@
+examples:
+
+"other,misc_RNA" and "misc_RNA,other"
+753/1043 in Rfam
+
+"tRNA,rRNA" and "rRNA,tRNA"
+24 tRNA, 4 rRNA, 29 not in Rfam
+
+"other,tmRNA"
+314/314 in Rfam, are tmRNA
+
+"rRNA,misc_RNA"
+253/646 in Rfam, are rRNA
+
+"misc_RNA"
+0/174947 in Rfam
+
+"other"
+68931/144006 in Rfam
