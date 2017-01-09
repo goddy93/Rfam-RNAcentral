@@ -6,6 +6,8 @@
 /cmscan_rfam/tests/*
 
 #MY_FILES
+/rfamp.sublime-project
+/rfamp.sublime-workspace
 /Icon?
 /parser_cmscan/files/*
 /database/files/*
@@ -15,5 +17,4 @@
 /cmscan_results/query_files/*
 /cmscan_results/plots/*
 /new_fams/files/*
-/rfamp.sublime-project
-/rfamp.sublime-workspace
+/additional_results/files/*
