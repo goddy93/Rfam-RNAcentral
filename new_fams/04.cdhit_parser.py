@@ -1,7 +1,8 @@
 import pandas as pd
 
-cluster_file = open("./eunewfam.cluster.clstr", 'r')
+cluster_file = open("./files/cd-hit-clusters/eunewfam-clustered3.fasta.clstr", 'r')
 cluster_list = cluster_file.read()
+output_file = "./files/db_clust"
 
 
 def read_clusters(cluster_list):
@@ -74,4 +75,4 @@ for j in range(0, len(a)):
         b.append([a[str(j)][i], j])
     df = df.append(b)
 
-df.to_csv("./test", sep='\t', index=False)
+df.to_csv(output_file, sep='\t', index=False)
