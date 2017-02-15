@@ -18,3 +18,5 @@
 /cmscan_results/additional_results/files/*
 /cmscan_results/plots/*
 /new_fams/files/*
+/new_fams/nhmmer_approach/files/*
+/new_fams/pub_approach/files/*
