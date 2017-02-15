@@ -80,7 +80,7 @@ The database consists of 6 tables that are created and loaded as specified in `d
 |``urs_rnacentral`` | Contains all the URSs and the length of the related sequence                    |
 +-------------------+---------------------------------------------------------------------------------+
 
-3. Summary results
+3. Results
 ^^^^^^^^^^^^^^^^^^^	
 3.1 Groups
 ~~~~~~~~~~
@@ -131,29 +131,95 @@ b. `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/
 
 - `03.bars_relevance.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/03.bars_relevance.py>`_ : Produces several bar plots of relevance measures. Separates ``rna_types`` into "want in Rfam" and "don't want in Rfam" groups.
 
+- `04.pie_global_art.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/04.pie_global_art.py>`_ : Hard-coded script for plot.ly pie chart that renames groups into and easily-readable plot.
+
       *An alternative for steps 3.3 and 3.4 is quering directly in the python script, using ``sqlalchemy``. This is useful if the database is to be updated constantly, but proved to be very slow and very inefficient process if the plots are generated trough separate scripts. An example of how this could work is shown in `sqlalch_plots<https://github.com/nataquinones/Rfam-RNAcentral/tree/master/cmscan_results/sqlalch_plots>`_
 
 4. Search for actual new families
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 4.1 Filter interesting **NEW FAMILY** members.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The **NEW FAMILY** group includes many sequences that are not good candidates to build new families, such as:
+
+- RNA types that are not suitable for Rfam: lncRNA, piRNA, siRNA, miRNA, precursor, guide_RNA and rasiRNA
+- Undetected rRNAs, tRNAs and tmRNAs 
+- Sequences from the previous two groups where the label ``rna_type`` is incorrect
+- Spacers, repeats and synthetic constructs
+- Very small or very large sequences
+
+The following filter can be used to extract the relevant group:
+
+
+.. code:: SQL
+
+  SELECT
+        ur.id,
+        ur.len,
+        uc.db,
+        uc.rna_type,
+        d.description
+  FROM urs_rnacentral ur
+  LEFT JOIN cmscan_run cr ON ur.id = cr.id
+  LEFT JOIN urs_condensed uc ON ur.id = uc.id
+  LEFT JOIN cmscan_hits ch ON ur.id = ch.id
+  LEFT JOIN urs_description_con d ON ur.id=d.id
+  -- original new_fam group
+  WHERE cr.id IS NOT NULL -- ran
+  AND uc.rfam_acc IS NULL -- not in Rfam
+  AND ch.hit_rfam_acc IS NULL -- no hit
+  -- unwanted types NOT for Rfam
+  AND uc.rna_type NOT LIKE "%lncRNA%"
+  AND uc.rna_type NOT LIKE "%piRNA%"
+  AND uc.rna_type NOT LIKE "siRNA"
+  AND uc.rna_type NOT LIKE "%miRNA%"
+  AND uc.rna_type NOT LIKE "%precursor%"
+  AND uc.rna_type NOT LIKE "%guide_RNA%"
+  AND uc.rna_type NOT LIKE "%rasiRNA%"
+  -- unwanted types tRNA, rRNA, tmRNA
+  AND uc.rna_type NOT LIKE "%rRNA%"
+  AND uc.rna_type NOT LIKE "%tRNA%"
+  AND uc.rna_type NOT LIKE "%tmRNA%"
+  -- rna_type filters
+  AND d.description NOT LIKE "%tRNA%"
+  AND d.description NOT LIKE "%transfer%"
+  AND d.description NOT LIKE "%rRNA%"
+  AND d.description NOT LIKE "%ribosomal%"
+  AND d.description NOT LIKE "%miRNA%"
+  AND d.description NOT LIKE "%microRNA%"
+  AND d.description NOT LIKE "%precursor%"
+  AND d.description NOT LIKE "%piR%"
+  AND d.description NOT LIKE "%piRNA%"
+  -- spacers and other
+  AND d.description NOT LIKE "%spacer%"
+  AND d.description NOT LIKE "%ITS%"
+  AND d.description NOT LIKE "%intergenic%"
+  AND d.description NOT LIKE "%5'-R%"
+  AND d.description NOT LIKE "%synthetic construct%"
+  AND d.description NOT LIKE "%uncharacterized protein%"
+  -- size
+  AND ur.len > 45
+  AND ur.len < 2200
+
+4.2 Fetch sequence and publication information from RNAcentral
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `02.get_fasta.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/02.get_fasta.py>`_: Fetches from RNAcentral API the sequences for a list of URSs. Makes a single FASTA file with all.
+
+- `03.get_pub.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/03.get_pub.py>`_: Fetches from RNAcentral API all the publications information for a list of URSs. Makes a single table with all the publications related to all the URSs.
+
+
+(OUTDATED)Filter interesting **NEW FAMILY** members.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 By using the table generated in step 3.3 and with the same criteria from `03.bars_relevance.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/03.bars_relevance.py>`_, a new group can be generated which includes the secuences that are: *a.* not in Rfam, *b.* not hit by the Rfam CM, and *c.* of interest for Rfam. This group is named **EU-NEW FAMILY** (real-new family).
 
 - `01.eu_pseudo_tables.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/01.eu_pseudo_tables.py>`_: Separates the file ``df_newfam`` generated through `00.rnatype_cleanup_lato.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/cmscan_results/00.rnatype_cleanup_lato.py>`_ into two table files: ``df_eunewfam`` which includes all the sequences with a ``rna_type`` of interest, and ``df_pseudonewfam``, which includes all the rest.
 
-4.2 Fetch sequence and publication information from RNAcentral
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `02.get_fasta.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/02.get_fasta.py>`_: Fetches from RNAcentral API the sequences for a list of URSs extracting it from a file like **df_eunewfam** (or *df_pseudonewfam*). Makes a single FASTA file with all.
-
-- `03.get_pub.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/03.get_pub.py>`_: Fetches from RNAcentral API all the publications information for a list of URSs extracting it from a file like **df_eunewfam** (or *df_pseudonewfam*). Makes a single table with all the publications related to all the URSs.
-
-4.3 Cluster sequences
+(OUTDATED) Cluster sequences
 ~~~~~~~~~~~~~~~~~~~~~~
 Cluster the ``FASTA`` file obtained in step 4.2 with CD-HIT-EST:
 
 .. code::
 
   cd-hit-est -i eunewfam.fasta -o eunewfam.cluster -c 0.8 -n 4 -d 20 -s 0.5
-4.4 Filter
+(OUTDATED) Filter
 ~~~~~~~~~~
 - `04.cdhit_parser.py <https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/04.cdhit_parser.py>`_: Takes ``.clstr`` output from CD-HIT-EST and makes a table with each sequence and the cluster number to which they were assigned.
