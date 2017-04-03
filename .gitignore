@@ -16,7 +16,10 @@
 /cmscan_results/clean_tables/*
 /cmscan_results/query_files/*
 /cmscan_results/additional_results/files/*
+/cmscan_results/confhits/files/*
 /cmscan_results/plots/*
 /new_fams/files/*
+/new_fams/_dep_pub_approach/*
+/new_fams/_dep_nhmmer_approach/*
+/new_fams/nhmmer_approach/_07_dep/*
 /new_fams/nhmmer_approach/files/*
-/new_fams/pub_approach/files/*
