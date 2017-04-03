@@ -16,7 +16,8 @@
 /cmscan_results/clean_tables/*
 /cmscan_results/query_files/*
 /cmscan_results/additional_results/files/*
-/cmscan_results/confhits/files/*
+/cmscan_results/additional_results/confhits/files/*
+/cmscan_results/additional_results/lostscan/files/*
 /cmscan_results/plots/*
 /new_fams/files/*
 /new_fams/_dep_pub_approach/*
