@@ -11,6 +11,7 @@
 /Icon?
 /parser_cmscan/files/*
 /database/files/*
+/database/parser_two/files/*
 /fasta_tools/files/*
 /results/files/*
 /cmscan_results/clean_tables/*
