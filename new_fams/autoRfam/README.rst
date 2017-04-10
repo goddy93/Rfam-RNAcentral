@@ -1,22 +1,47 @@
 autoRfam README
 ===============
 
-1. numbers
+Workflow
+********
+#. Get sequences
+~~~~~~~~~~~~~~~~
 
-A. upper-case letters
-   and it goes over many lines
+#.#. Filter sequences
+~~~~~~~~~~~~~~~~~~~~~
 
-   with two paragraphs and all!
+1. ``nhmmer`` all vs all
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-a. lower-case letters
+1.2. Parse
+^^^^^^^^^^
+1.3. Slice alignments
+^^^^^^^^^^^^^^^^^^^^^
 
-   3. with a sub-list starting at a different number
-   4. make sure the numbers are in the correct sequence though!
+2. Filter alignments
+~~~~~~~~~~~~~~~~~~~~
 
-I. upper-case roman numerals
+2.1. Remove non significant
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-i. lower-case roman numerals
+2.2. Remove singletons
+^^^^^^^^^^^^^^^^^^^^^^
 
-(1) numbers again
+3. Cluster groups
+~~~~~~~~~~~~~~~~~
 
-1) and again
+4. Clean alignments
+~~~~~~~~~~~~~~~~~~~
+4.1. Clean alignments
+^^^^^^^^^^^^^^^^^^^^^
+4.2. Pick best of repeated
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+5. Select best alignment of group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5.1. Easel cleaned alignments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5.2. Select best
+^^^^^^^^^^^^^^^^
+
+5. Make autoRfam
+~~~~~~~~~~~~~~~~
