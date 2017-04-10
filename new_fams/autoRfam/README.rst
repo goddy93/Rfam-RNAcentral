@@ -1,37 +1,22 @@
 autoRfam README
 ===============
 
-0. Get sequences
-1. Filter a: Individual sequences by length, keywords
-2. nhmmer all vs. all
-2.1 Parse	
-2.2 Slice alignments
-3. Filter 2
+1. numbers
 
-	4.1 Remove non significant
+A. upper-case letters
+   and it goes over many lines
 
-	4.2 Remove singletons
+   with two paragraphs and all!
 
-#. Cluster groups
+a. lower-case letters
 
-#. Select best of group
+   3. with a sub-list starting at a different number
+   4. make sure the numbers are in the correct sequence though!
 
-	6.1 Clean alignments
-	
-		6.1.1 Pick best of repeated
-		
-		6.1.2 Clean
-		
-	6.1 Easel cleaned alignments
-	
-	6.2 Select best
-	
-7. Make autoRfam
-	7.1 Fetch alignments
-	
-	7.2 Run RNAcode
-	
-	7.3 Run R-scape
-	
-	7.4 Make html
-	
+I. upper-case roman numerals
+
+i. lower-case roman numerals
+
+(1) numbers again
+
+1) and again
