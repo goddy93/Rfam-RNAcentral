@@ -6,10 +6,10 @@ Workflow
 0. Get sequences
 ~~~~~~~~~~~~~~~~
 
-0.1. Filter sequences
+0.a. Filter sequences
 ^^^^^^^^^^^^^^^^^^^^^^
 
-0.2. Fetch ``.fasta``
+0.b. Fetch ``.fasta``
 ^^^^^^^^^^^^^^^^^^^^^
 Description:
 
@@ -26,20 +26,21 @@ Description:
 .. _00.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
 
 
-1. ``nhmmer`` all vs all
-~~~~~~~~~~~~~~~~~~~~~~~~
-1.1. Run ``nhmmer``
+01. Use ``nhmmer`` to compare all vs all
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+01.a. Run ``nhmmer``
 ^^^^^^^^^^^^^^^^^^^
-Description: Runs nhmmer with options: ``-o`` ``-A`` ``--tblout`` ``--noali`` ``--rna`` ``--tformat fasta`` ``--qformat fasta``
+Description:
+  Runs nhmmer with options: ``-o`` ``-A`` ``--tblout`` ``--noali`` ``--rna`` ``--tformat fasta`` ``--qformat fasta``
 
 +---------+-------------------------+------------------------------------+
-| IN:     | ``newfam_seq.fasta``    | All sequences in ``.fasta`` format |
+|**IN:**  | ``newfam_seq.fasta``    | All sequences in ``.fasta`` format |
 +---------+-------------------------+------------------------------------+
-| script: | 01.a.newfam_nhmmer.sh_                                       |
+|*script:*| 01.a.newfam_nhmmer.sh_                                       |
 +---------+-------------------------+------------------------------------+
-| use:    | bsub < ``01.newfam_nhmmer.sh``                               |
+|*use:*   | ``bsub < 01.a.newfam_nhmmer.sh``                             |
 +---------+-------------------------+------------------------------------+
-| OUT:    |``newfam_nhmmer.out``    |  ``nhmmer`` output                 |
+|**OUT:** |``newfam_nhmmer.out``    |  ``nhmmer`` output                 |
 |         +-------------------------+------------------------------------+
 |         |``newfam_nhmmer.sto``    |  concatenated stockholm file       |
 |         +-------------------------+------------------------------------+
@@ -50,11 +51,11 @@ Description: Runs nhmmer with options: ``-o`` ``-A`` ``--tblout`` ``--noali`` ``
 |         |``newfam_nhmmer.job.err``|  job stderr                        |
 +---------+-------------------------+------------------------------------+
 
-.. _01.a.newfam-nhmmer.sh: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
+.. _01.a.newfam_nhmmer.sh: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/autoRfam/01.a.newfam-nhmmer.sh
 
-(Change ``#PATHS``, ``#BSUB -o`` and ``#BSUB -e``)
+(To use, change ``#PATHS``, ``#BSUB -o`` and ``#BSUB -e`` to the appropriate paths.)
 
-1.2. Parse ``nhmmer`` table
+01.b. Parse ``nhmmer`` table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Description:
 
