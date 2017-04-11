@@ -8,6 +8,18 @@ Workflow
 
 00.a. Get group of interest and filter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The first thing to do, is to define a set of RNAcentral sequences that could pontentially be clustered to build new families. To achieve this, we filtered the sequences through the following criteria:
+
+1. The sequence has no Rfam hits (see Rfam-RNAcentral_)
+2. The sequence is of an appropriate size (40-1500 nt)
+3. Extra filters such as rna_type, description, and publication title, related to the sequence URS.
+
+An example of how these filters can be set in a database is found in 00.a.filter_query.sql_. It is important to have a somehow reduced group of sequences, because clustering process will crash with large sets.
+
+The output of this process should be a **list of RNAcentral URSs**.
+
+.. _Rfam-RNAcentral: https://github.com/nataquinones/Rfam-RNAcentral
+.. _00.a.filter_query.sql: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/autoRfam/00.a.filter_query.sql
 
 00.b. Fetch ``.fasta`` sequences from RNAcentral
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -27,8 +39,8 @@ Description:
 .. _00.b.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.b.get_fasta.py
 
 
-01. Use ``nhmmer`` to compare all vs all
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+01. Use ``nhmmer`` to compare all vs. all
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 01.a. Run ``nhmmer``
 ^^^^^^^^^^^^^^^^^^^
 Description:
