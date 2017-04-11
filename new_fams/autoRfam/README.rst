@@ -30,24 +30,29 @@ Description:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 1.1. Run ``nhmmer``
 ^^^^^^^^^^^^^^^^^^^
-Description:
+Description: Runs nhmmer with options: ``-o`` ``-A`` ``--tblout`` ``--noali`` ``--rna`` ``--tformat fasta`` ``--qformat fasta``
 
 +---------+-------------------------+------------------------------------+
 | IN:     | ``newfam_seq.fasta``    | All sequences in ``.fasta`` format |
 +---------+-------------------------+------------------------------------+
-| script: | 01.a.newfam-nhmmer.sh_                                       |
+| script: | 01.a.newfam_nhmmer.sh_                                       |
 +---------+-------------------------+------------------------------------+
-| OUT:    |``newfam_nhmmer.out``    |  ``nhmmer`` stout                  |
+| use:    | bsub < ``01.newfam_nhmmer.sh``                               |
++---------+-------------------------+------------------------------------+
+| OUT:    |``newfam_nhmmer.out``    |  ``nhmmer`` output                 |
 |         +-------------------------+------------------------------------+
 |         |``newfam_nhmmer.sto``    |  concatenated stockholm file       |
 |         +-------------------------+------------------------------------+
 |         |``newfam_nhmmer.tbl``    | ``nhmmer`` table output            |
-+---------+-------------------------+------------------------------------+
-| use:    |``01.newfam-nhmmer.sh <IN> <OUT.out> <OUT.sto> <OUT.tbl>``    |
+|         +-------------------------+------------------------------------+
+|         |``newfam_nhmmer.job.out``|  job stdout                        |
+|         +-------------------------+------------------------------------+
+|         |``newfam_nhmmer.job.err``|  job stderr                        |
 +---------+-------------------------+------------------------------------+
 
-.. _01.newfam-nhmmer.sh: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
+.. _01.a.newfam-nhmmer.sh: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
 
+(Change ``#PATHS``, ``#BSUB -o`` and ``#BSUB -e``)
 
 1.2. Parse ``nhmmer`` table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
