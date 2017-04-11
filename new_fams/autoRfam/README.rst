@@ -21,7 +21,7 @@ Description:
 +---------+-------------------------+-------------------------+
 |*use:*   | ``python 00.b.get_fasta.py <IN.tsv> <OUT.fasta>`` |
 +---------+-------------------------+-------------------------+
-|**OUT:** |``newfam_seq.fasta``     | fasta file              |
+|**OUT:** |``newfam_seq.fasta``     | file with sequences     |
 +---------+-------------------------+-------------------------+
 
 .. _00.b.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
