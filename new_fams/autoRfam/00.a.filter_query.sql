@@ -12,14 +12,17 @@ LEFT JOIN cmscan_hits ch ON ur.id = ch.id
 LEFT JOIN urs_description_con d ON ur.id = d.id
 LEFT JOIN pub_condensed pc ON ur.id = pc.id
 
+-- RFAM HITS FILTER
 WHERE cr.id IS NOT NULL -- scan ran
 AND uc.rfam_acc IS NULL -- not in Rfam
 AND ch.hit_rfam_acc IS NULL -- no hit
 
--- size
+-- SIZE FILTER
 AND ur.len > 40
-AND ur.len < 2000
--- unwanted types NOT for Rfam
+AND ur.len < 1500
+
+-- OTHER FILTERS
+-- unwanted rna_types
 AND uc.rna_type NOT LIKE "%lncRNA%"
 AND uc.rna_type NOT LIKE "%piRNA%"
 AND uc.rna_type NOT LIKE "siRNA"
@@ -27,11 +30,10 @@ AND uc.rna_type NOT LIKE "%miRNA%"
 AND uc.rna_type NOT LIKE "%precursor%"
 AND uc.rna_type NOT LIKE "%guide_RNA%"
 AND uc.rna_type NOT LIKE "%rasiRNA%"
--- unwanted types tRNA, rRNA, tmRNA
 AND uc.rna_type NOT LIKE "%rRNA%"
 AND uc.rna_type NOT LIKE "%tRNA%"
 AND uc.rna_type NOT LIKE "%tmRNA%"
--- rna_type filters
+-- unwanted types not in rna_type, through description
 AND d.description NOT LIKE "%tRNA%"
 AND d.description NOT LIKE "%transfer%"
 AND d.description NOT LIKE "%rRNA%"
@@ -41,14 +43,14 @@ AND d.description NOT LIKE "%microRNA%"
 AND d.description NOT LIKE "%precursor%"
 AND d.description NOT LIKE "%piR%"
 AND d.description NOT LIKE "%piRNA%"
--- spacers and other
+-- spacers and other through description
 AND d.description NOT LIKE "%spacer%"
 AND d.description NOT LIKE "%ITS%"
 AND d.description NOT LIKE "%intergenic%"
 AND d.description NOT LIKE "%5'-R%"
 AND d.description NOT LIKE "%synthetic construct%"
 AND d.description NOT LIKE "%uncharacterized protein%"
--- publication filters
+-- spacers and other through publication title
 AND pc.title NOT LIKE "%barcod%"
 AND pc.title NOT LIKE "%biogeo%"
 AND pc.title NOT LIKE "%colonization%"
