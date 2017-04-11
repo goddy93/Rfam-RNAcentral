@@ -12,7 +12,7 @@ Workflow
 00.b. Fetch ``.fasta`` sequences from RNAcentral
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Description:
-  Takes file of RNAcentral URSs (non species-specific, one URS per line), fetches the sequence in ``.fasta`` file and makes file with all of the sequences.
+  Takes file of RNAcentral URSs (non species-specific, one URS per line), fetches the sequence in ``.fasta`` format and makes file with all of the sequences.
 
 +---------+-------------------------+-------------------------+
 |**IN:**  | ``newfam_list.tsv``     | list of RNAcentral URSs |
@@ -24,7 +24,7 @@ Description:
 |**OUT:** |``newfam_seq.fasta``     | file with sequences     |
 +---------+-------------------------+-------------------------+
 
-.. _00.b.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
+.. _00.b.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.b.get_fasta.py
 
 
 01. Use ``nhmmer`` to compare all vs all
