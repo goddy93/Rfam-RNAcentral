@@ -1,8 +1,23 @@
-import pandas as pd
 import requests
+import pandas as pd
+import sys
 
-EUNEWFAM_IN = "./files/df_eunewfam"  # input file
-EUNEWFAM_FASTA_OUT = "./files/eunewfam.fasta"  # output file
+TSV_IN = sys.argv[1]  # one column .tsv file with urs
+FASTA_OUT = sys.argv[2]  # fasta file output
+
+# .............FUNCTIONS.............
+
+
+def tabletolist(tsvtbl):
+    """
+    Takes single column tsv and makes it
+    a list
+    """
+    urs_df = pd.read_table(
+               tsvtbl,
+               header=None)
+    urs_list = urs_df[0].tolist()
+    return urs_list
 
 
 def fasta_seq(urs_list, outfile):
@@ -15,18 +30,9 @@ def fasta_seq(urs_list, outfile):
         url = ("http://rnacentral.org/api/v1/rna/" +
                i +
                "?format=fasta")
-        req = requests.get(url, timeout=10)
+        req = requests.get(url, timeout=30)
         out_file.write(req.content)
     out_file.close()
 
-# read input table
-DF_EUNEWFAM = pd.read_table(
-    EUNEWFAM_IN,
-    low_memory=False,
-    sep="\t"
-    )
-
-# make list from id column
-EUNEWFAM_LIST = DF_EUNEWFAM["id"].tolist()
-
-fasta_seq(EUNEWFAM_LIST, EUNEWFAM_FASTA_OUT)
+# .............PROCESS.............
+fasta_seq(tabletolist(TSV_IN), FASTA_OUT)
