@@ -3,27 +3,28 @@ autoRfam README
 
 Workflow
 ********
-0. Get sequences
-~~~~~~~~~~~~~~~~
+00. Get sequences
+~~~~~~~~~~~~~~~~~
 
-0.a. Filter sequences
-^^^^^^^^^^^^^^^^^^^^^^
+00.a. Get group of interest and filter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.b. Fetch ``.fasta``
-^^^^^^^^^^^^^^^^^^^^^
+00.b. Fetch ``.fasta`` sequences from RNAcentral
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Description:
+  Takes file of RNAcentral URSs (non species-specific, one URS per line), fetches the sequence in ``.fasta`` file and makes file with all of the sequences.
 
 +---------+-------------------------+-------------------------+
-| IN:     | ``newfam_list.tsv``     | List of RNAcentral URSs |
+|**IN:**  | ``newfam_list.tsv``     | list of RNAcentral URSs |
 +---------+-------------------------+-------------------------+
-| script: | 00.get_fasta.py_                                  |
+| script: | 00.b.get_fasta.py_                                |
 +---------+-------------------------+-------------------------+
-| OUT:    |``newfam_seq.fasta``     |                         |
+| use:    | ``python 00.b.get_fasta.py <IN.tsv> <OUT.fasta>`` |
 +---------+-------------------------+-------------------------+
-| use:    |  ``python 00.get_fasta.py <IN.tsv> <OUT.fasta>``  |
+|**OUT:** |``newfam_seq.fasta``     | fasta file              |
 +---------+-------------------------+-------------------------+
 
-.. _00.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
+.. _00.b.get_fasta.py: https://github.com/nataquinones/Rfam-RNAcentral/blob/master/new_fams/nhmmer_approach2/00.get_fasta.py
 
 
 01. Use ``nhmmer`` to compare all vs all
