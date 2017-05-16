@@ -1,25 +1,35 @@
-#VIRTUAL ENVIRONMENT
-/venv-parser/*
-/venv-fasta_slicer/*
+# os and editor
+.DS_Store
+Thumbs.db
+.cache
+.project
+*.sublime-project
+*.sublime-workspace
+Icon?
 
-#TEST_Files
-/cmscan_rfam/tests/*
+# python
+*.py[cod]
 
-#MY_FILES
-/rfamp.sublime-project
-/rfamp.sublime-workspace
-/Icon?
+# project
+_ignore/
+cmscan_results/
+
+
+#temp
 /parser_cmscan/files/*
+
 /database/files/*
 /database/parser_two/files/*
+
 /fasta_tools/files/*
-/results/files/*
+
 /cmscan_results/clean_tables/*
 /cmscan_results/query_files/*
 /cmscan_results/additional_results/files/*
 /cmscan_results/additional_results/confhits/files/*
 /cmscan_results/additional_results/lostscan/files/*
 /cmscan_results/plots/*
+
 /new_fams/files/*
 /new_fams/_dep_pub_approach/*
 /new_fams/_dep_nhmmer_approach/*
