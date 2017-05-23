@@ -55,7 +55,6 @@ def argparser():
 
     return parser.parse_args()
 
-
 # .............................FUNCTIONS....................................
 
 
@@ -151,9 +150,7 @@ def main():
     # save file as tsv
     df_selected.to_csv(out_tsv, sep="\t", index=False)
 
-
 # ..........................................................................
-
 
 if __name__ == '__main__':
     main()
