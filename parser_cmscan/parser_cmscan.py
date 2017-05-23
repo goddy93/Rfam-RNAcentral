@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+"""
+Parses Infernal's cmscan table output into .tsv file.
+(Infernal 1.1.2 cmscan --tblout --fmt 2)
+
+General usage:
+python parser_cmscan.py <tbl>
+
+More:
+python parser_cmscan.py -h
+"""
+
 import argparse
 import os
 import pandas as pd
