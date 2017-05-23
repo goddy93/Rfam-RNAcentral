@@ -18,6 +18,8 @@ import os
 import pandas as pd
 
 # ..........................ARGUMENT PARSER.................................
+
+
 def argparser():
     """
     Argument parsing function, defines:
@@ -149,7 +151,9 @@ def main():
     # save file as tsv
     df_selected.to_csv(out_tsv, sep="\t", index=False)
 
+
 # ..........................................................................
-    
+
+
 if __name__ == '__main__':
     main()
